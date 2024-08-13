@@ -48,17 +48,20 @@ export default function Starfield(props: Props) {
 				let stars = makeStars(starCount);
 
 				const clear = () => {
-					c.fillStyle = backgroundColor;
+					c.fillStyle = backgroundColor || '#000000'; // Default to black if backgroundColor is undefined
 					c.fillRect(0, 0, canvas.width, canvas.height);
 				};
+				
 
 				const putPixel = (x: number, y: number, brightness: number) => {
+					const defaultStarColor = [255, 255, 255]; // Default to white color if starColor is undefined
+					const color = starColor || defaultStarColor;
 					const rgb =
-						'rgba(' + starColor[0] + ',' + starColor[1] + ',' + starColor[2] + ',' + brightness + ')';
-                    c.beginPath();
-                    c.arc(x, y, 1, 0, 2 * Math.PI)
-                    c.fillStyle = rgb;
-                    c.fill()
+						'rgba(' + color[0] + ',' + color[1] + ',' + color[2] + ',' + brightness + ')';
+					c.beginPath();
+					c.arc(x, y, 1, 0, 2 * Math.PI);
+					c.fillStyle = rgb;
+					c.fill();
 				};
 
 				const moveStars = (distance: number) => {
