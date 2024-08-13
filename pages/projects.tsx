@@ -7,7 +7,7 @@ import { FloatingNav } from '@/components/ui/NavBar';
 import { IconHome, IconMessage, IconUser } from "@tabler/icons-react";
 import Head from 'next/head'
 
-export default function about() {
+export default function Projects() {
   const [isDarkMode, setDarkMode] = React.useState(true);
 
   const toggleDarkMode = (checked: boolean) => {
