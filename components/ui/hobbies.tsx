@@ -9,12 +9,12 @@ const cards = [
 ];
 
 const cardVariants = {
-  hidden: (direction) => ({
+  hidden: (direction: 'left' | 'right') => ({
     x: direction === 'left' ? '-100vw' : '100vw',
     rotate: direction === 'left' ? -100 : 100,
     transition: { duration: 1, ease: 'easeInOut' }
   }),
-  visible: (direction, angle) => ({
+  visible: (direction: 'left' | 'right') => ({
     opacity: 1,
     x: 0,
     rotate: direction === 'left' ? -10 : 10,
@@ -41,7 +41,7 @@ const Hobbies = () => {
 
   useEffect(() => {
     if (showCards) {
-      controls.start((direction) => cardVariants.visible(direction, 0));
+      controls.start((direction) => cardVariants.visible(direction));
     } else {
       controls.start((direction) => cardVariants.hidden(direction));
     }
