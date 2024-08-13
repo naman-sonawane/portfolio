@@ -18,7 +18,7 @@ const Footer = () => {
             </div>
 
             <div className="z-20 flex items-center p-16 m-10">
-                <Heart isClick={isClick} onClick={() => setClick(true)} /> 
+                {/* Heart */}
             </div>
 
             <div className="text-center w-screen h-auto flex-grow">
