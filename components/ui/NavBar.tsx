@@ -20,7 +20,7 @@ export const FloatingNav: React.FC<FloatingNavProps> = ({ navItems, className, i
         "fixed z-[5000] flex m-10 items-center justify-center rounded-[10px] shadow-lg",
         className,
         "bg-white dark:bg-black border border-slate-300 dark:border-white border-opacity-10 dark:border-opacity-20",
-        "w-min bottom-0 left-0 sm:w-[1/2vw] sm:left-auto sm:bottom-auto sm:right-0 sm:flex-row sm:top-0 sm:h-auto",
+        "w-min top-0 left-0 sm:w-[1/2vw] sm:left-auto sm:top-auto sm:right-0 sm:flex-row sm:bottom-0 sm:h-auto",
         "md:flex md:flex-col md:top-1/2 md:-translate-y-1/2",
         "lg:top-1/2 lg:-translate-y-1/2 lg:w-min lg:h-auto lg:flex-col lg:justify-center lg:items-center"
       )}

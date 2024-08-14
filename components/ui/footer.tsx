@@ -22,7 +22,7 @@ const Footer = () => {
             </div>
 
             <div className="text-center w-screen h-auto flex-grow">
-                <p className="absolute left-1/2 transform -translate-x-1/2 text-bold text-black z-10">Made with ✨ by Naman</p>
+                <p className="absolute left-1/2 transform -translate-x-1/2 text-bold text-black dark:text-slate-300 z-10">Made with ✨ by Naman</p>
             </div>
         </footer>
     );

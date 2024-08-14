@@ -59,7 +59,7 @@ export default function About() {
               />
             </div>
             <div className="relative z-10 h-screen flex justify-center flex-col items-center">
-              <div className="flex items-center justify-center w-auto space-x-10">
+              <div className="flex-col sm:flex-row flex items-center justify-center w-auto space-x-10">
                 <Tooltip title="Naman :)" followCursor>
                   <Image
                     src={pfp}
@@ -72,11 +72,11 @@ export default function About() {
                     initial="hidden"
                     animate="visible"
                     variants={textVariants}
-                    className={`text-3xl sm:text-2xl w-full md:text-3xl italic transition-colors duration-1000 text-black dark:text-white font-bold`}
+                    className={`text-xl sm:text-2xl w-full md:text-3xl italic transition-colors duration-1000 text-black dark:text-white font-bold`}
                   >
                     I&apos;m a Full-Stack Developer working in Toronto, CA.
                   </motion.h1>
-                  <h6 className="text-black dark:text-slate-400 w-2/3">
+                  <h6 className="text-black dark:text-slate-400 w-2/3 sm:w-3/4">
                   I love diving into both backend and frontend work. Whether crafting UI/UX or sorting out server-side logic, I relish the challenge and creativity along the journey. I&apos;m a passionate self-learner and enjoy exploring new technologies.
                   </h6>
                 </div>
