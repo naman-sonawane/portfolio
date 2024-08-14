@@ -1,5 +1,7 @@
 import React from 'react';
 import Tooltip from '@mui/material/Tooltip';
+import { motion } from 'framer-motion';
+
 
 interface Skill {
   title: string;
@@ -159,10 +161,16 @@ const tools: Skill[] = [
 
 const InfScroller: React.FC = () => {
   return (
-    <div>
-      <div className="relative flex items-center">
+    <div className="space-y-16">
+      <motion.div
+        className="relative flex items-center pt-10"
+        initial={{ opacity: 0, y: 60 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false }}
+        transition={{ duration: 0.6 }}
+      >
         <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -rotate-90 whitespace-nowrap text-black dark:text-white">
-          <span className="text-sm font-thin text-black tracking-widest dark:text-slate-200 w-min">PROGRAMMING<br/>LANGUAGES</span>
+          <span className="text-sm font-thin text-black tracking-widest dark:text-slate-200">PROGRAMMING<br/>LANGUAGES</span>
         </div>
         <div className="flex-1 flex items-center justify-start ml-24">
           <div className="flex flex-wrap gap-4 justify-center md:justify-start">
@@ -182,10 +190,17 @@ const InfScroller: React.FC = () => {
             ))}
           </div>
         </div>
-      </div>
-      <div className="relative pt-10 flex items-center">
+      </motion.div>
+
+      <motion.div
+        className="relative flex items-center pt-10"
+        initial={{ opacity: 0, y: 60 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false }}
+        transition={{ duration: 0.6 }}
+      >
         <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -rotate-90 whitespace-nowrap text-black dark:text-white">
-          <span className="text-sm font-thin text-black tracking-widest dark:text-slate-200 w-min">FRAMEWORKS</span>
+          <span className="text-sm font-thin text-black tracking-widest dark:text-slate-200">FRAMEWORKS</span>
         </div>
         <div className="flex-1 flex items-center justify-start ml-24">
           <div className="flex flex-wrap gap-4 lg:grid-cols-2 justify-center md:justify-start">
@@ -205,10 +220,17 @@ const InfScroller: React.FC = () => {
             ))}
           </div>
         </div>
-      </div>
-      <div className="relative pt-10 flex items-center">
+      </motion.div>
+
+      <motion.div
+        className="relative flex items-center pt-10"
+        initial={{ opacity: 0, y: 60 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false }}
+        transition={{ duration: 0.6 }}
+      >
         <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -rotate-90 whitespace-nowrap text-black dark:text-white">
-          <span className="text-sm font-thin text-black tracking-widest dark:text-slate-200 w-min">TECHNOLOGIES</span>
+          <span className="text-sm font-thin text-black tracking-widest dark:text-slate-200">TECHNOLOGIES</span>
         </div>
         <div className="flex-1 flex items-center justify-start ml-24">
           <div className="flex flex-wrap gap-4 lg:grid-cols-2 justify-center md:justify-start">
@@ -228,7 +250,7 @@ const InfScroller: React.FC = () => {
             ))}
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

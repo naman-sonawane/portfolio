@@ -1,28 +1,15 @@
-import { useState } from "react";
-import Image from 'next/image';
-import planet from '@/public/planet.png';
+import Counter from '@/components/ui/heart';
 import React from 'react';
 
 const Footer = () => {
-    const [isClick, setClick] = useState(false);
-
     return (
-        <footer className="relative flex items-center absolute -bottom-30 justify-between w-screen p-4 overflow-hidden">
-            {/* Background Image */}
-            <div className="absolute inset-0 z-10 -bottom-30">
-                <Image
-                    src={planet}
-                    alt="Planet Background"
-                    objectFit="cover"
-                />
+        <footer className="relative flex items-center -bottom-30 pt-10 justify-between w-screen p-4 overflow-hidden">
+            <div className="absolute inset-0 z-[1] mt-20 -bottom-30 dark:bg-gradient-to-b dark:from-transparent dark:to-black bg-gradient-to-b from-transparent to-slate-200">
             </div>
 
-            <div className="z-20 flex items-center p-16 m-10">
-                {/* Heart */}
-            </div>
-
-            <div className="text-center w-screen h-auto flex-grow">
+            <div className="text-center z-10 p-16 m-10 w-screen flex-col h-auto flex-grow">
                 <p className="absolute left-1/2 transform -translate-x-1/2 text-bold text-black dark:text-slate-300 z-10">Made with ✨ by Naman</p>
+                <Counter />
             </div>
         </footer>
     );

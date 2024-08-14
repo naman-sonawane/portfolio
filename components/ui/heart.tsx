@@ -1,34 +1,38 @@
-import React, { useState } from 'react';
+// components/Counter.tsx
+import React, { useEffect, useState } from 'react';
+import { database, ref, set, onValue } from '../../lib/firebase'; // Adjust the import path as needed
+import HeartIcon from '@/components/ui/hearticon'
 
-// Heart Component
-const Heart = ({ counter, onLike }: { counter: number; onLike: () => void }) => {
-    const [liked, setLiked] = useState(false);
+const Counter: React.FC = () => {
+  const [count, setCount] = useState<number | null>(null);
 
-    // Function to handle heart click
-    const handleClick = () => {
-        if (!liked) {
-            setLiked(true);
-            onLike();
-        }
-    };
+  useEffect(() => {
+    // Create a reference to the 'counter' node in the database
+    const counterRef = ref(database, 'counter');
 
-    // Inline styles for the heart
-    const heartStyle = {
-        width: '50px',
-        height: '50px',
-        background: liked ? 'linear-gradient(135deg, #ff007f, #ff4b2b)' : '#d3d3d3',
-        clipPath: 'polygon(50% 0%, 100% 30%, 100% 70%, 50% 100%, 0% 70%, 0% 30%)',
-        transition: 'transform 0.2s ease-in-out, background 0.2s ease-in-out',
-        transform: liked ? 'scale(1.2)' : 'scale(1)',
-        cursor: 'pointer',
-    };
+    // Listen for changes to the 'counter' node
+    const unsubscribe = onValue(counterRef, (snapshot) => {
+      const data = snapshot.val();
+      setCount(data || 0);
+    });
 
-    return (
-        <div>
-            <div style={heartStyle} onClick={handleClick}></div>
-            <p>Likes: {counter}</p>
-        </div>
-    );
+    // Clean up the listener on component unmount
+    return () => unsubscribe();
+  }, []);
+
+  const handleClick = () => {
+    if (count !== null) {
+      // Update the 'counter' node with the new value
+      set(ref(database, 'counter'), count + 1);
+    }
+  };
+
+  return (
+    <div className="z-40 text-center justify-center items-center flex flex-col p-10">
+      <HeartIcon onClick={handleClick}/>
+      <p className="text-black dark:text-slate-300">{count !== null ? count : 'Loading...'}</p>
+    </div>
+  );
 };
 
-export default Heart;
+export default Counter;

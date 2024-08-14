@@ -1,13 +1,13 @@
 "use client";
-import Hero from "@/components/Hero";
 import Starfield from "@/components/ui/starbg";
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
 import React from 'react';
 import { FloatingNav } from '@/components/ui/NavBar';
 import { IconHome, IconMessage, IconUser } from "@tabler/icons-react";
 import Head from 'next/head'
+import Footer from '@/components/ui/footer'
 
-export default function Projects() {
+export default function Work() {
   const [isDarkMode, setDarkMode] = React.useState(true);
 
   const toggleDarkMode = (checked: boolean) => {
@@ -21,8 +21,8 @@ export default function Projects() {
       icon: <IconHome className="h-4 w-4 text-neutral-500 dark:text-white" />,
     },
     {
-      name: "Projects",
-      link: "/projects",
+      name: "Work",
+      link: "/work",
       icon: <IconUser className="h-4 w-4 text-neutral-500 dark:text-white" />,
     },
     {
@@ -35,7 +35,7 @@ export default function Projects() {
   return (
     <>
     <Head>
-        <title>About - Naman Sonawane</title>
+        <title>Work ⫽ Naman Sonawane</title>
     </Head>
 
     <main className={`h-screen relative overflow-hidden ${isDarkMode ? 'dark' : ''}`}>
@@ -64,6 +64,7 @@ export default function Projects() {
             {/* Content */}
           </div>
         </div>
+        <Footer/>
       </div>
     </main>
     </>

@@ -6,6 +6,7 @@ import React from 'react';
 import { FloatingNav } from '@/components/ui/NavBar';
 import { IconHome, IconMessage, IconUser } from "@tabler/icons-react";
 import Head from 'next/head'
+import Footer from '@/components/ui/footer'
 
 export default function Home() {
   const [isDarkMode, setDarkMode] = React.useState(true);
@@ -21,8 +22,8 @@ export default function Home() {
       icon: <IconHome className="h-4 w-4 text-neutral-500 dark:text-white" />,
     },
     {
-      name: "Projects",
-      link: "/projects",
+      name: "Work",
+      link: "/work",
       icon: <IconUser className="h-4 w-4 text-neutral-500 dark:text-white" />,
     },
     {
@@ -38,7 +39,7 @@ export default function Home() {
         <title>Home ⫽ Naman Sonawane</title>
     </Head>
 
-    <main className={`h-screen relative overflow-hidden ${isDarkMode ? 'dark' : ''}`}>
+    <main className={`h-screen relative ${isDarkMode ? 'dark' : ''}`}>
       <div className="flex justify-center w-auto z-[5000] h-screen sm:h-auto sm:w-screen px-auto md:w-auto md:h-screen lg:w-auto lg:h-screen absolute items-center">
         <FloatingNav navItems={navItems} isDarkMode={isDarkMode} className="z-10" /></div>
       
@@ -65,6 +66,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Footer/>
     </main>
     </>
   );

@@ -25,7 +25,7 @@ export default function About() {
 
   const navItems = [
     { name: "About", link: "/about", icon: <IconHome className="h-4 w-4 text-neutral-500 dark:text-white" /> },
-    { name: "Projects", link: "/projects", icon: <IconUser className="h-4 w-4 text-neutral-500 dark:text-white" /> },
+    { name: "Work", link: "/work", icon: <IconUser className="h-4 w-4 text-neutral-500 dark:text-white" /> },
     { name: "Contact", link: "/contact", icon: <IconMessage className="h-4 w-4 text-neutral-500 dark:text-white" /> },
   ];
 
@@ -35,12 +35,12 @@ export default function About() {
         <title>About ⫽ Naman Sonawane</title>
       </Head>
 
-      <main className={`min-h-screen relative overflow-auto ${isDarkMode ? 'dark' : ''}`}>
-        <div className="fixed top-0 left-0 w-full z-[5000] p-4 flex justify-center">
+      <main className={`relative ${isDarkMode ? 'dark' : ''}`}>
+      <div className="fixed top-0 left-0 w-full z-[5000] p-4 flex justify-center">
           <FloatingNav navItems={navItems} isDarkMode={isDarkMode} className="z-10" />
         </div>
 
-        <div className="fixed bottom-0 right-0 z-[999] border-slate-500 border-opacity-25 border-2 m-10 p-2 rounded-[10px] scale-100 hover:scale-110 transition-transform duration-300 ease-in-out z-10 flex w-min h-min">
+        <div className="fixed bottom-0 right-0 z-[999] border-slate-500 border-opacity-25 border-2 m-10 p-2 rounded-[10px] scale-100 hover:scale-110 transition-transform duration-300 ease-in-out flex w-min h-min">
           <DarkModeSwitch
             checked={isDarkMode}
             onChange={toggleDarkMode}
