@@ -82,7 +82,7 @@ export default function Work() {
                       Certifications
                     </motion.h1>
                     <h6 className="text-black dark:text-slate-300 w-full">
-                      Working with Python is a real thrill for me! These badges showcase the credentials I've earned in Python programming after great persistence. Every project feels like a new adventure, and I love seeing what I can come up with next. ⛰️
+                      Working with Python is a real thrill for me! These badges showcase the credentials I&apos;ve earned in Python programming after great persistence. Every project feels like a new adventure, and I love seeing what I can come up with next. ⛰️
                     </h6>
                   </div>
                   <div className="flex flex-col items-center space-y-4 mt-8">
