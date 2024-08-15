@@ -30,12 +30,14 @@
     "react-toggle-dark-mode": "^1.1.1",
     "tailwind-merge": "^2.4.0",
     "tailwind-typewriter": "^1.0.1",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "tw-elements": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "daisyui": "^4.12.10",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
     "postcss": "^8",
