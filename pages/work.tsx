@@ -5,9 +5,9 @@ import { DarkModeSwitch } from 'react-toggle-dark-mode';
 import React from 'react';
 import { FloatingNav } from '@/components/ui/NavBar';
 import { IconHome, IconMessage, IconUser } from "@tabler/icons-react";
-import Head from 'next/head'
-import Footer from '@/components/ui/footer'
-import Popup from '@/components/ui/certspopup'
+import Head from 'next/head';
+import Footer from '@/components/ui/footer';
+import Popup from '@/components/ui/certspopup';
 
 export default function Work() {
   const [isDarkMode, setDarkMode] = React.useState(true);
@@ -73,44 +73,51 @@ export default function Work() {
                 
                 <div className="flex-col sm:flex-row items-center gap-20 flex justify-center">
                   <div className="flex-col items-start w-min">
-                  <motion.h1
-                    initial="hidden"
-                    animate="visible"
-                    variants={textVariants}
-                    className={`text-3xl sm:text-2xl md:text-3xl w-min top-24 md:top-50 sm:top-32 lg:top-24 whitespace-nowrap transform -translate-y-1/2 italic lg:text-3xl transition-colors duration-1000 text-black dark:text-white font-bold`}
-                  >
-                    Certifications
-                  </motion.h1>
-                  <h6 className="text-black dark:text-slate-300 w-full">
-                    Working with Python is a real thrill for me! These badges showcase the credentials I've earned in Python programming after great persistence. Every project feels like a new adventure, and I love seeing what I can come up with next. ⛰️
-                  </h6>
+                    <motion.h1
+                      initial="hidden"
+                      animate="visible"
+                      variants={textVariants}
+                      className={`text-3xl sm:text-2xl md:text-3xl w-min top-24 md:top-50 sm:top-32 lg:top-24 whitespace-nowrap transform -translate-y-1/2 italic lg:text-3xl transition-colors duration-1000 text-black dark:text-white font-bold`}
+                    >
+                      Certifications
+                    </motion.h1>
+                    <h6 className="text-black dark:text-slate-300 w-full">
+                      Working with Python is a real thrill for me! These badges showcase the credentials I've earned in Python programming after great persistence. Every project feels like a new adventure, and I love seeing what I can come up with next. ⛰️
+                    </h6>
                   </div>
                   <div className="flex flex-col items-center space-y-4 mt-8">
                     <div className="flex justify-center space-x-4">
+                      <a href="https://www.credly.com/badges/25ab02d0-2662-4a94-a5ef-28ee7ddc710d/public_url" target="_blank" rel="noopener noreferrer">
+                        <img
+                          src="https://images.credly.com/size/340x340/images/37e26478-d80c-43e8-80eb-ec492f3a26c1/image.png"
+                          alt="PCEP Badge"
+                          className="w-32 h-32 hover:drop-shadow-[0_0_8px_#ebcf34] transition-all"
+                        />
+                      </a>
+                      <a href="https://www.credly.com/badges/7fb0fec3-eac9-4d58-9efd-bf9665301705/public_url" target="_blank" rel="noopener noreferrer">
+                        <img
+                          src="https://images.credly.com/size/340x340/images/4e248e82-9e87-4a63-9263-250fafe5fb1f/image.png"
+                          alt="PCAP Badge"
+                          className="w-32 h-32 hover:drop-shadow-[0_0_8px_#0c79f5] transition-all"
+                        />
+                      </a>
+                    </div>
+                    <a href="https://www.credly.com/badges/34923fe3-3193-4a8e-bad2-d8fa4575b7b7/public_url" target="_blank" rel="noopener noreferrer">
                       <img
                         src="https://images.credly.com/size/340x340/images/b790eb12-ecb3-4b94-89be-61aa40c92e7c/image.png"
-                        alt="PCEP Badge"
-                        className="w-32 h-32"
+                        alt="PCPP Badge"
+                        className="w-32 h-32 hover:drop-shadow-[0_0_8px_#f5430c] transition-all"
                       />
-                      <img
-                        src="https://images.credly.com/size/340x340/images/4e248e82-9e87-4a63-9263-250fafe5fb1f/image.png"
-                        alt="PCAP Badge"
-                        className="w-32 h-32"
-                      />
-                    </div>
-                    <img
-                      src="https://images.credly.com/size/340x340/images/37e26478-d80c-43e8-80eb-ec492f3a26c1/image.png"
-                      alt="PCPP Badge"
-                      className="w-32 h-32"
-                    />
+                    </a>
                   </div>
                 </div>
-              </div><div className="pt-20 flex-col text-center items-center flex justify-center">
+              </div>
+              <div className="pt-20 flex-col text-center items-center flex justify-center">
                 <h6 className="text-black dark:text-slate-300 w-full sm:w-2/3">
                   Dabbling into the latest tech like AI and Azure Cloud brings fresh excitement and innovation to my work.
                 </h6>
                 <Popup />
-                </div>
+              </div>
             </div>
           </div>
         </div>

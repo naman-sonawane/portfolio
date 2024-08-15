@@ -2,7 +2,6 @@ import React from 'react';
 import Tooltip from '@mui/material/Tooltip';
 import { motion } from 'framer-motion';
 
-
 interface Skill {
   title: string;
   iconUrl: string;
@@ -19,7 +18,7 @@ const skills: Skill[] = [
     color: "#ffde57"
   },
   {
-    title: "JavaScript",
+    title: "Vanilla JS",
     iconUrl: "https://www.svgrepo.com/show/452045/js.svg",
     link: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
     color: "#f7df1e"
@@ -43,7 +42,7 @@ const skills: Skill[] = [
     color: "#e34c26"
   },
   {
-    title: "CSS",
+    title: "Vanilla CSS",
     iconUrl: "/css.svg",
     link: "https://developer.mozilla.org/en-US/docs/Web/CSS",
     color: "#264de4"
@@ -87,6 +86,12 @@ const frameworks: Skill[] = [
     iconUrl: "/next.svg",
     link: "https://nextjs.org/",
     color: "#c2c2c2"
+  },
+  {
+    title: "Bootstrap",
+    iconUrl: "/bootstrap.svg",
+    link: "https://getbootstrap.com/",
+    color: "#8F12FD"
   },
   {
     title: "Node.js",
@@ -140,10 +145,22 @@ const tools: Skill[] = [
     color: "#FFFFFF"
   },
   {
+    title: "Firebase",
+    iconUrl: "https://www.svgrepo.com/show/373595/firebase.svg",
+    link: "https://firebase.google.com/",
+    color: "#FFC400"
+  },
+  {
     title: "Framer",
     iconUrl: "/framer.svg",
     link: "https://www.framer.com/",
     color: "#0099ff"
+  },
+  {
+    title: "NPM",
+    iconUrl: "https://www.svgrepo.com/show/452077/npm.svg",
+    link: "https://www.npmjs.com/",
+    color: "#CC3534"
   },
   {
     title: "Azure Cloud",
@@ -176,15 +193,16 @@ const InfScroller: React.FC = () => {
           <div className="flex flex-wrap gap-4 justify-center md:justify-start">
             {skills.map((skill) => (
               <Tooltip key={skill.title} title={skill.title} followCursor>
-                <a href={skill.link} target="_blank" rel="noopener noreferrer" className="w-1/4 sm:w-1/5 md:w-1/6 lg:w-1/8">
+                <a href={skill.link} target="_blank" rel="noopener noreferrer" className="w-1/4 sm:w-1/5 md:w-1/6 lg:w-1/8 flex flex-col items-center">
                   <div
-                    className="flex items-center rounded-full bg-slate-900 justify-center border border-gray-100 dark:border-gray-900 transition-colors duration-300"
+                    className="flex items-center rounded-[10px] bg-slate-900 justify-center border border-gray-100 dark:border-gray-900 transition-colors duration-300"
                     style={{ borderColor: 'gray' }}
                     onMouseEnter={(e) => (e.currentTarget.style.borderColor = skill.color)}
                     onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'gray')}
                   >
-                    <img src={skill.iconUrl} alt={skill.title} className="h-16 w-16 p-4" />
+                    <img src={skill.iconUrl} alt={skill.title} className="h-24 w-24 p-4" />
                   </div>
+                  <p className="mt-2 text-sm text-center text-black dark:text-white">{skill.title}</p>
                 </a>
               </Tooltip>
             ))}
@@ -203,18 +221,19 @@ const InfScroller: React.FC = () => {
           <span className="text-sm font-thin text-black tracking-widest dark:text-slate-200">FRAMEWORKS</span>
         </div>
         <div className="flex-1 flex items-center justify-start ml-24">
-          <div className="flex flex-wrap gap-4 lg:grid-cols-2 justify-center md:justify-start">
+          <div className="flex flex-wrap gap-4 justify-center md:justify-start">
             {frameworks.map((skill) => (
               <Tooltip key={skill.title} title={skill.title} followCursor>
-                <a href={skill.link} target="_blank" rel="noopener noreferrer" className="w-1/4 sm:w-1/5 md:w-1/6 lg:w-1/8">
+                <a href={skill.link} target="_blank" rel="noopener noreferrer" className="w-1/4 sm:w-1/5 md:w-1/6 lg:w-1/8 flex flex-col items-center">
                   <div
-                    className="flex items-center rounded-full bg-slate-900 justify-center border border-gray-100 dark:border-gray-900 transition-colors duration-300"
+                    className="flex items-center rounded-[10px] bg-slate-900 justify-center border border-gray-100 dark:border-gray-900 transition-colors duration-300"
                     style={{ borderColor: 'gray' }}
                     onMouseEnter={(e) => (e.currentTarget.style.borderColor = skill.color)}
                     onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'gray')}
                   >
-                    <img src={skill.iconUrl} alt={skill.title} className="h-16 w-16 p-4" />
+                    <img src={skill.iconUrl} alt={skill.title} className="h-24 w-24 p-4" />
                   </div>
+                  <p className="mt-2 text-sm text-center text-black dark:text-white">{skill.title}</p>
                 </a>
               </Tooltip>
             ))}
@@ -233,18 +252,19 @@ const InfScroller: React.FC = () => {
           <span className="text-sm font-thin text-black tracking-widest dark:text-slate-200">TECHNOLOGIES</span>
         </div>
         <div className="flex-1 flex items-center justify-start ml-24">
-          <div className="flex flex-wrap gap-4 lg:grid-cols-2 justify-center md:justify-start">
+          <div className="flex flex-wrap gap-4 justify-center md:justify-start">
             {tools.map((skill) => (
               <Tooltip key={skill.title} title={skill.title} followCursor>
-                <a href={skill.link} target="_blank" rel="noopener noreferrer" className="w-1/4 sm:w-1/5 md:w-1/6 lg:w-1/8">
+                <a href={skill.link} target="_blank" rel="noopener noreferrer" className="w-1/4 sm:w-1/5 md:w-1/6 lg:w-1/8 flex flex-col items-center">
                   <div
-                    className="flex items-center rounded-full bg-slate-900 justify-center border border-gray-100 dark:border-gray-900 transition-colors duration-300"
+                    className="flex items-center rounded-[10px] bg-slate-900 justify-center border border-gray-100 dark:border-gray-900 transition-colors duration-300"
                     style={{ borderColor: 'gray' }}
                     onMouseEnter={(e) => (e.currentTarget.style.borderColor = skill.color)}
                     onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'gray')}
                   >
-                    <img src={skill.iconUrl} alt={skill.title} className="h-16 w-16 p-4" />
+                    <img src={skill.iconUrl} alt={skill.title} className="h-24 w-24 p-4" />
                   </div>
+                  <p className="mt-2 text-sm text-center text-black dark:text-white">{skill.title}</p>
                 </a>
               </Tooltip>
             ))}

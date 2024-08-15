@@ -29,7 +29,7 @@ const Popup: React.FC = () => {
     },
     {
         src: "https://www.databricks.com/sites/default/files/2021/12/lakehouse-fundamentals.png",
-        url: "https://credentials.databricks.com/520eff16-3773-49ca-bb56-02f8d08dd69d",
+        url: "/genai.png",
     }
   ];
 
@@ -41,7 +41,7 @@ const Popup: React.FC = () => {
             See more
           </span>
           <div className="-translate-x-40 group-hover/modal-btn:translate-x-0 flex items-center justify-center absolute inset-0 transition duration-500 text-white z-20">
-            🥇
+          ⚡
           </div>
         </ModalTrigger>
         <ModalBody>
