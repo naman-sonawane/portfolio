@@ -62,7 +62,6 @@ const skills: Skill[] = [
 ];
 
 const frameworks: Skill[] = [
-  // existing frameworks
   {
     title: "React.js",
     iconUrl: "https://www.svgrepo.com/show/493719/react-javascript-js-framework-facebook.svg",

@@ -1,5 +1,5 @@
 "use client";
-
+import Projects from '@/components/ui/projects'
 import { motion } from 'framer-motion';
 import Starfield from "@/components/ui/starbg";
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
@@ -80,7 +80,7 @@ export default function Work() {
               </div>
             </section>
 
-            <section className="text-center mb-16">
+            <section className="mb-16">
               <div className="flex flex-col sm:flex-row items-center gap-20 justify-center">
                 <div className="flex flex-col items-start w-min">
                   <motion.h1
@@ -128,6 +128,12 @@ export default function Work() {
                 Dabbling into the latest tech like AI and Azure Cloud brings fresh excitement and innovation to my work.
               </h6>
               <Popup />
+            </section>
+
+            <section className="flex flex-col items-center pt-24 mb-16">
+              <div className="flex flex-col items-center">
+                <Projects />
+              </div>
             </section>
           </div>
         </div>
