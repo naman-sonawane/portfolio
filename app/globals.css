@@ -11,3 +11,9 @@
 body {
     overflow-x: hidden;
 }
+
+.text-stroke {
+    color: white;
+    -webkit-text-fill-color: black;
+    -webkit-text-stroke: 1px #bababa;
+  }

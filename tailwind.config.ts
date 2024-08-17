@@ -47,6 +47,9 @@ const config = {
       },
     },
     extend: {
+      backgroundImage: {
+        "rainbow-gradient": "linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)",
+      },
       colors: {
         black: {
           DEFAULT: "#232533",
@@ -106,6 +109,16 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        "breathing-gradient": {
+          "0%, 100%": {
+              "background-size": "400% 400%",
+              "background-position": "0% 0%;",
+          },
+          "50%": {
+              "background-size": "200% 200%",
+              "background-position": "100% 100%;",
+          },
+      },
         move: {
           "0%": { transform: "translateX(-200px)" },
           "100%": { transform: "translateX(200px)" },
@@ -179,6 +192,7 @@ const config = {
         },
       },
       animation: {
+        "breathing-gradient": "breathing-gradient 20s ease infinite",
         move: "move 5s linear infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
