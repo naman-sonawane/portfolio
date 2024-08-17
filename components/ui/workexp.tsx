@@ -77,14 +77,16 @@ export default function WorkExperienceCards() {
               <p className="text-gray-700 dark:text-gray-200 mt-4">{experience.description}</p>
               <div className="flex flex-wrap gap-2 mt-4">
                 {experience.skills.map((skill, i) => (
+                  <div className="bg-slate-900 rounded-full">
                   <Image
                     key={i}
                     src={skill}
                     alt="Skill Icon"
                     width={24}
                     height={24}
-                    className="object p-2 w-10 h-auto bg-slate-900 rounded-full"
+                    className="object p-2 w-10 h-auto"
                   />
+                  </div>
                 ))}
               </div>
             </div>

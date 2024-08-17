@@ -151,7 +151,7 @@ const tools: Skill[] = [
   },
   {
     title: "Framer",
-    iconUrl: "/framer.svg",
+    iconUrl: "https://framerusercontent.com/images/h7FdBZniewu931bq7eEC8zTA4s.svg",
     link: "https://www.framer.com/",
     color: "#0099ff"
   },
