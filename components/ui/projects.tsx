@@ -104,7 +104,7 @@ export default function Projects() {
                                                 alt="Skill Icon"
                                                 width={24}
                                                 height={24}
-                                                className="object p-2 w-10 h-auto"
+                                                className="object p-2 h-10 w-auto"
                                             />
                                         </div>
                                     ))}

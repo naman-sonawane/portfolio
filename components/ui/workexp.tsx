@@ -58,7 +58,7 @@ export default function WorkExperienceCards() {
       </motion.h1>
       <div className="max-w-6xl w-screen mx-auto px-4">
         {experiences.map((experience, index) => (
-            <div className="hover:translate-x-4 transition-all transform">
+            <div key={index} className="hover:translate-x-4 transition-all transform">
           <motion.div
             key={index}
             className="group relative flex justify-center items-center shadow-lg overflow-hidden mb-8 p-6 w-full md:w-3/5 lg:w-3/5 transition-all transform"
@@ -77,7 +77,7 @@ export default function WorkExperienceCards() {
               <p className="text-gray-700 dark:text-gray-200 mt-4">{experience.description}</p>
               <div className="flex flex-wrap gap-2 mt-4">
                 {experience.skills.map((skill, i) => (
-                  <div className="bg-slate-900 rounded-full">
+                  <div key={i} className="bg-slate-900 rounded-full">
                   <Image
                     key={i}
                     src={skill}
