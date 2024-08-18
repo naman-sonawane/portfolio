@@ -2,10 +2,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Counter from '@/components/ui/heart';
 
-const Footer = () => {
+interface FooterProps {
+    className?: string; // Optional className prop
+}
+
+const Footer: React.FC<FooterProps> = ({ className }) => {
     return (
         <motion.footer
-            className="relative flex items-center -bottom-30 pt-10 justify-between w-screen p-4 overflow-hidden"
+            className={`relative flex items-center -bottom-30 pt-10 justify-between w-screen p-4 overflow-hidden ${className}`}
             initial={{ opacity: 0, y: 60 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
