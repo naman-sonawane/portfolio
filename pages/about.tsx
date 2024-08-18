@@ -67,7 +67,7 @@ export default function About() {
                     className="rounded-full transition-transform w-60 h-60 duration-300 ease-in-out hover:scale-110 hover:rotate-6"
                   />
                 </Tooltip>
-              <div className="flex flex-col items-left w-1/2 space-y-4">
+              <div className="flex flex-col items-left w-2/3 lg:w-1/2 md:w-1/2 space-y-4">
                   <motion.h1
                     initial="hidden"
                     animate="visible"
