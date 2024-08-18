@@ -52,7 +52,7 @@ const Popup: React.FC = () => {
             <p className="text-sm md:text-base text-neutral-500 dark:text-neutral-400 text-center mb-6">
               Here are some of the certifications in Azure Cloud and AI I have earned.<br/> Click on them to view details.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 overflow-scroll md:grid-cols-3 gap-4">
               {badgeData.map((badge, index) => (
                 <a
                   key={index}

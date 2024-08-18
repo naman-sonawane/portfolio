@@ -1,4 +1,5 @@
 "use client";
+import { motion } from 'framer-motion';
 import Footer from '@/components/ui/footer';
 import Starfield from "@/components/ui/starbg";
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
@@ -121,6 +122,17 @@ export default function Contact() {
                 {displayText}
               </h1>
             </div>
+          </div>
+          <div className="w-3/4 items-left flex">
+          <motion.div
+            className="relative flex pt-10 text-left w-full lg:w-1/2 md:w-1/2"
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false }}
+            transition={{ duration: 0.6 }}
+          >
+            <p className="text-xl sm:text-lg md:text-lg text-slate-600 lg:text-xl text-slate-500 dark:text-slate-300" > Feel free to connect with me on LinkedIn or check out my work on Github ✌️</p>
+          </motion.div>
           </div>
         </div>
 

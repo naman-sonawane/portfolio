@@ -63,7 +63,7 @@ export default function Work() {
         </div>
 
         {/* Main Content */}
-        <div className="relative min-h-screen flex flex-col items-center bg-gray-100 dark:bg-gray-900">
+        <div className="relative overflow-x-hidden min-h-screen flex flex-col items-center bg-gray-100 dark:bg-gray-900">
           <div className="absolute inset-0 z-0">
             <Starfield
               starCount={2000}

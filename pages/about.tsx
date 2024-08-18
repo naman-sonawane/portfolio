@@ -48,7 +48,7 @@ export default function About() {
           />
         </div>
 
-        <div className="flex flex-col items-center mx-auto px-5">
+        <div className="flex flex-col items-center overflow-x-hidden mx-auto px-5">
           <div className="max-w-7xl w-full relative">
             <div className="absolute inset-0 z-0">
               <Starfield
