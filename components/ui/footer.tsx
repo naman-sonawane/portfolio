@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import Counter from '@/components/ui/heart';
 
 interface FooterProps {
-    className?: string; // Optional className prop
+    className?: string;
 }
 
 const Footer: React.FC<FooterProps> = ({ className }) => {

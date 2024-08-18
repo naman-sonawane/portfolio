@@ -1,7 +1,6 @@
 import React from 'react';
 import { Caveat } from "next/font/google";
 
-// Import the Caveat font
 const caveat = Caveat({ subsets: ["latin"] });
 
 function ContactButton() {

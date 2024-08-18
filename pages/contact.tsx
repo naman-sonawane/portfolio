@@ -22,7 +22,7 @@ export default function Contact() {
   const handleMouseEnter = (logoName: string) => {
     setHoveredLogo(logoName);
 
-    // Clear any previous timeout
+
     if (hoverTimeout.current) {
       clearTimeout(hoverTimeout.current);
     }
@@ -33,7 +33,7 @@ export default function Contact() {
   };
 
   const handleMouseLeave = () => {
-    // Clear the timeout and reset text
+
     if (hoverTimeout.current) {
       clearTimeout(hoverTimeout.current);
     }
@@ -91,7 +91,7 @@ export default function Contact() {
               />
             </div>
             <div className="z-10 flex justify-center items-center">
-              {/* Logos */}
+              {}
               <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex space-x-4 z-20">
                 <a 
                   href="https://www.linkedin.com/in/naman-sonawane/"
@@ -109,12 +109,12 @@ export default function Contact() {
                 </a>
               </div>
               
-              {/* Parallelogram */}
+              {}
               <div className={`bg-rainbow-gradient animate-breathing-gradient z-10 -skew-x-12 w-9/12 h-20 p-1 relative`}>
                 <div className="bg-white dark:bg-[#000] min-h-full w-auto"></div>
               </div>
               
-              {/* Contact Text */}
+              {}
               <h1
                 className={`text-4xl font-bold text-stroke italic absolute bottom-0 left-1/2 transform -translate-x-1/2 z-1 transition-all duration-500 ${hoveredLogo ? 'translate-y-3/4' : 'bottom-40 translate-y-2/3'}`}
                 style={{ transform: hoveredLogo ? 'translate(-50%, 60%)' : '' }}
@@ -136,7 +136,7 @@ export default function Contact() {
           </div>
         </div>
 
-        {/* Footer */}
+        {}
         <Footer className="absolute bottom-0 left-0 w-fullpy-4 px-6 text-center z-20" />
       </main>
     </>

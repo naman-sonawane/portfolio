@@ -1,4 +1,4 @@
-// components/ui/HeartIcon.tsx
+
 import React, { useState, useCallback } from 'react';
 
 interface HeartIconProps {

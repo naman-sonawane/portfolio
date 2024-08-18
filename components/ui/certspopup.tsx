@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/animated-modal";
 
 const Popup: React.FC = () => {
-  // Dictionary with badge data including URLs
   const badgeData = [
     {
       src: "https://media.licdn.com/dms/image/C4E12AQH-e2WPGP0YXQ/article-cover_image-shrink_600_2000/0/1649839178239?e=2147483647&v=beta&t=5uPmguARjr_MMdIw3QyUjtH9RbZQ8vTKuezgHQ_SFTc",

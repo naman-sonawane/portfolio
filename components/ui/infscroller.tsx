@@ -10,7 +10,7 @@ interface Skill {
 }
 
 const skills: Skill[] = [
-  // existing programming languages
+
   {
     title: "Python",
     iconUrl: "https://www.svgrepo.com/show/452091/python.svg",

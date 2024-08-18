@@ -48,12 +48,12 @@ export default function Work() {
       </Head>
 
       <main className={`relative ${isDarkMode ? 'dark' : ''}`}>
-        {/* Floating Navigation */}
+        {}
         <div className="fixed top-0 left-0 w-full z-[5000]">
           <FloatingNav navItems={navItems} isDarkMode={isDarkMode} className="z-10" />
         </div>
 
-        {/* Dark Mode Toggle */}
+        {}
         <div className="fixed bottom-0 right-0 z-[999] border-gray-500 border-opacity-25 border-2 m-10 p-2 rounded-[10px] scale-100 hover:scale-110 transition-transform duration-300 ease-in-out flex w-min h-min">
           <DarkModeSwitch
             checked={isDarkMode}
@@ -62,7 +62,7 @@ export default function Work() {
           />
         </div>
 
-        {/* Main Content */}
+        {}
         <div className="relative overflow-x-hidden min-h-screen flex flex-col items-center bg-gray-100 dark:bg-gray-900">
           <div className="absolute inset-0 z-0">
             <Starfield
@@ -138,7 +138,7 @@ export default function Work() {
           </div>
         </div>
 
-        {/* Footer */}
+        {}
         <Footer />
       </main>
     </>
