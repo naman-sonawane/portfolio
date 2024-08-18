@@ -9,10 +9,10 @@ import Head from 'next/head';
 
 export default function Contact() {
   const [isDarkMode, setDarkMode] = React.useState(true);
-  const [hoveredLogo, setHoveredLogo] = React.useState(null);
+  const [hoveredLogo, setHoveredLogo] = React.useState<string | null>(null);
   const [displayText, setDisplayText] = React.useState('CONTACT');
 
-  let hoverTimeout = React.useRef(null);
+  let hoverTimeout = React.useRef<NodeJS.Timeout | null>(null);
 
   const toggleDarkMode = (checked: boolean) => {
     setDarkMode(checked);
