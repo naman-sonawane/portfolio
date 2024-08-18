@@ -74,7 +74,7 @@ export default function About() {
                     variants={textVariants}
                     className={`text-xl sm:text-2xl w-full md:text-3xl italic transition-colors duration-1000 text-black dark:text-white font-bold`}
                   >
-                    I&apos;m a Full-Stack Developer working in Toronto, CA.
+                    I&apos;m a <p className="animate-breathing-gradient bg-rainbow-gradient bg-clip-text text-transparent">Full-Stack Developer</p> working in Toronto, CA.
                   </motion.h1>
                   <h6 className="text-black dark:text-slate-400 w-2/3 sm:w-3/4">
                   I love diving into both backend and frontend work. Whether crafting UI/UX or sorting out server-side logic, I relish the challenge and creativity along the journey. I&apos;m a passionate self-learner and enjoy exploring new technologies.

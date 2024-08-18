@@ -30,7 +30,7 @@ const Counter: React.FC = () => {
   return (
     <div className="z-40 text-center justify-center items-center flex flex-col p-10">
       <HeartIcon onClick={handleClick}/>
-      <p className="text-black dark:text-slate-300">{count !== null ? count : 'Loading...'}</p>
+      <p className="text-black dark:text-gray-100">{count !== null ? count : 'Loading...'}</p>
     </div>
   );
 };

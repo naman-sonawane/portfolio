@@ -106,7 +106,7 @@ const frameworks: Skill[] = [
   },
   {
     title: "Electron",
-    iconUrl: "/electron.svg",
+    iconUrl: "https://upload.wikimedia.org/wikipedia/commons/9/91/Electron_Software_Framework_Logo.svg",
     link: "https://www.electronjs.org/",
     color: "#47848F"
   }
@@ -210,7 +210,7 @@ const InfScroller: React.FC = () => {
                   <Tooltip key={skill.title} title={skill.title} followCursor>
                     <a href={skill.link} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center w-1/3 sm:w-1/4 md:w-1/6 lg:w-1/8">
                       <div
-                        className="flex items-center rounded-[10px] bg-gray-900 justify-center border border-gray-100 dark:border-gray-900 transition-colors duration-300"
+                        className="flex items-center rounded-[10px] bg-gray-300 dark:bg-gray-900 justify-center border border-gray-900 dark:border-gray-100 dark:border-gray-900 transition-colors duration-300"
                         style={{ borderColor: 'gray' }}
                         onMouseEnter={(e) => (e.currentTarget.style.borderColor = skill.color)}
                         onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'gray')}

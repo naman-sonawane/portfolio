@@ -12,8 +12,46 @@ body {
     overflow-x: hidden;
 }
 
+@media (prefers-color-scheme: light) {
 .text-stroke {
     color: white;
     -webkit-text-fill-color: black;
     -webkit-text-stroke: 1px #bababa;
   }
+}
+
+@media (prefers-color-scheme: dark) {
+    .text-stroke {
+        color: black;
+        -webkit-text-fill-color: white;
+        -webkit-text-stroke: 1px #444444;
+    }
+}
+
+.transition-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 9999;
+  }
+  
+  .transition-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.5s ease, height 0.5s ease;
+  }
+  
+  .transition-wrapper.active .transition-circle {
+    width: 100vw;
+    height: 100vh;
+  }
+  
