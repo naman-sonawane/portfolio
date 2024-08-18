@@ -125,7 +125,7 @@ export default function Contact() {
         </div>
 
         {/* Footer */}
-        <Footer className="absolute bottom-0 left-0 w-full bg-gray-800 text-white py-4 px-6 text-center z-20" />
+        <Footer className="absolute bottom-0 left-0 w-fullpy-4 px-6 text-center z-20" />
       </main>
     </>
   );
