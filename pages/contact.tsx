@@ -18,7 +18,7 @@ export default function Contact() {
     setDarkMode(checked);
   };
 
-  const handleMouseEnter = (logoName) => {
+  const handleMouseEnter = (logoName: string) => {
     setHoveredLogo(logoName);
 
     // Clear any previous timeout
@@ -63,7 +63,7 @@ export default function Contact() {
   return (
     <>
       <Head>
-        <title>Contact ⫽ Naman Sonawane</title>
+        <title>Contact - Naman Sonawane</title>
       </Head>
 
       <main className={`h-screen relative overflow-hidden ${isDarkMode ? 'dark' : ''}`}>
@@ -79,7 +79,7 @@ export default function Contact() {
           />
         </div>
 
-        <div className="h-full flex flex-col sm:px-10 px-5">
+        <div className="h-full flex justify-center items-center flex-col overflow-hidden mx-auto sm:px-10 px-5">
           <div className="max-w-7xl w-full relative">
             <div className="absolute inset-0 z-0">
               <Starfield
@@ -122,7 +122,7 @@ export default function Contact() {
               </h1>
             </div>
           </div>
-          {/*<Footer/>*/}
+          <Footer/>
         </div>
       </main>
     </>
