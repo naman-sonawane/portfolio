@@ -64,7 +64,7 @@ export default function About() {
                   <Image
                     src={pfp}
                     alt="Profile Picture"
-                    className="rounded-full border-[10px] border-white dark:border-[#000000] transition-transform w-60 h-60 duration-300 ease-in-out hover:scale-110 hover:rotate-6"
+                    className="rounded-full transition-transform w-60 h-60 duration-300 ease-in-out hover:scale-110 hover:rotate-6"
                   />
                 </Tooltip>
               <div className="flex flex-col items-left w-1/2 space-y-4">

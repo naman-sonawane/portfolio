@@ -178,98 +178,58 @@ const tools: Skill[] = [
 const InfScroller: React.FC = () => {
   return (
     <div className="space-y-16">
-      <motion.div
-        className="relative flex items-center pt-10"
-        initial={{ opacity: 0, y: 60 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -rotate-90 whitespace-nowrap text-black dark:text-white">
-          <span className="text-sm font-thin text-black tracking-widest dark:text-slate-200">PROGRAMMING<br/>LANGUAGES</span>
-        </div>
-        <div className="flex-1 flex items-center justify-start ml-24">
-          <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-            {skills.map((skill) => (
-              <Tooltip key={skill.title} title={skill.title} followCursor>
-                <a href={skill.link} target="_blank" rel="noopener noreferrer" className="w-1/4 sm:w-1/5 md:w-1/6 lg:w-1/8 flex flex-col items-center">
-                  <div
-                    className="flex items-center rounded-[10px] bg-slate-900 justify-center border border-gray-100 dark:border-gray-900 transition-colors duration-300"
-                    style={{ borderColor: 'gray' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.borderColor = skill.color)}
-                    onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'gray')}
-                  >
-                    <img src={skill.iconUrl} alt={skill.title} className="h-24 w-24 p-4" />
-                  </div>
-                  <p className="mt-2 text-sm text-center text-black dark:text-white">{skill.title}</p>
-                </a>
-              </Tooltip>
-            ))}
-          </div>
-        </div>
-      </motion.div>
+      {['PROGRAMMING LANGUAGES', 'FRAMEWORKS', 'SOFTWARE'].map((section, index) => {
+        const data = index === 0 ? skills : index === 1 ? frameworks : tools;
+        const sectionTitle =
+          section === 'PROGRAMMING LANGUAGES'
+            ? 'PROGRAMMING\nLANGUAGES'
+            : section;
 
-      <motion.div
-        className="relative flex items-center pt-10"
-        initial={{ opacity: 0, y: 60 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -rotate-90 whitespace-nowrap text-black dark:text-white">
-          <span className="text-sm font-thin text-black tracking-widest dark:text-slate-200">FRAMEWORKS</span>
-        </div>
-        <div className="flex-1 flex items-center justify-start ml-24">
-          <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-            {frameworks.map((skill) => (
-              <Tooltip key={skill.title} title={skill.title} followCursor>
-                <a href={skill.link} target="_blank" rel="noopener noreferrer" className="w-1/4 sm:w-1/5 md:w-1/6 lg:w-1/8 flex flex-col items-center">
-                  <div
-                    className="flex items-center rounded-[10px] bg-slate-900 justify-center border border-gray-100 dark:border-gray-900 transition-colors duration-300"
-                    style={{ borderColor: 'gray' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.borderColor = skill.color)}
-                    onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'gray')}
-                  >
-                    <img src={skill.iconUrl} alt={skill.title} className="h-24 w-24 p-4" />
-                  </div>
-                  <p className="mt-2 text-sm text-center text-black dark:text-white">{skill.title}</p>
-                </a>
-              </Tooltip>
-            ))}
-          </div>
-        </div>
-      </motion.div>
-
-      <motion.div
-        className="relative flex items-center pt-10"
-        initial={{ opacity: 0, y: 60 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -rotate-90 whitespace-nowrap text-black dark:text-white">
-          <span className="text-sm font-thin text-black tracking-widest dark:text-slate-200">TECHNOLOGIES</span>
-        </div>
-        <div className="flex-1 flex items-center justify-start ml-24">
-          <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-            {tools.map((skill) => (
-              <Tooltip key={skill.title} title={skill.title} followCursor>
-                <a href={skill.link} target="_blank" rel="noopener noreferrer" className="w-1/4 sm:w-1/5 md:w-1/6 lg:w-1/8 flex flex-col items-center">
-                  <div
-                    className="flex items-center rounded-[10px] bg-slate-900 justify-center border border-gray-100 dark:border-gray-900 transition-colors duration-300"
-                    style={{ borderColor: 'gray' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.borderColor = skill.color)}
-                    onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'gray')}
-                  >
-                    <img src={skill.iconUrl} alt={skill.title} className="h-24 w-24 p-4" />
-                  </div>
-                  <p className="mt-2 text-sm text-center text-black dark:text-white">{skill.title}</p>
-                </a>
-              </Tooltip>
-            ))}
-          </div>
-        </div>
-      </motion.div>
+        return (
+          <motion.div
+            key={section}
+            className="relative flex items-center pt-10"
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -rotate-90 whitespace-nowrap text-black dark:text-white">
+              <span className="text-sm font-thin text-black tracking-widest dark:text-gray-200">
+                {sectionTitle.split('\n').map((line, index) => (
+                  <React.Fragment key={index}>
+                    {line}
+                    <br />
+                  </React.Fragment>
+                ))}
+              </span>
+            </div>
+            <div className="flex-1 flex items-center justify-start ml-24">
+              <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+                {data.map((skill) => (
+                  <Tooltip key={skill.title} title={skill.title} followCursor>
+                    <a href={skill.link} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center w-1/3 sm:w-1/4 md:w-1/6 lg:w-1/8">
+                      <div
+                        className="flex items-center rounded-[10px] bg-gray-900 justify-center border border-gray-100 dark:border-gray-900 transition-colors duration-300"
+                        style={{ borderColor: 'gray' }}
+                        onMouseEnter={(e) => (e.currentTarget.style.borderColor = skill.color)}
+                        onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'gray')}
+                      >
+                        <img
+                          src={skill.iconUrl}
+                          alt={skill.title}
+                          className="h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 p-2 sm:p-4"
+                        />
+                      </div>
+                      <p className="mt-2 text-xs sm:text-sm text-center text-black dark:text-white">{skill.title}</p>
+                    </a>
+                  </Tooltip>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        );
+      })}
     </div>
   );
 };

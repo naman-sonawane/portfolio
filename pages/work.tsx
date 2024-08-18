@@ -54,7 +54,7 @@ export default function Work() {
         </div>
 
         {/* Dark Mode Toggle */}
-        <div className="fixed bottom-0 right-0 z-[999] border-slate-500 border-opacity-25 border-2 m-10 p-2 rounded-[10px] scale-100 hover:scale-110 transition-transform duration-300 ease-in-out flex w-min h-min">
+        <div className="fixed bottom-0 right-0 z-[999] border-gray-500 border-opacity-25 border-2 m-10 p-2 rounded-[10px] scale-100 hover:scale-110 transition-transform duration-300 ease-in-out flex w-min h-min">
           <DarkModeSwitch
             checked={isDarkMode}
             onChange={toggleDarkMode}
@@ -91,7 +91,7 @@ export default function Work() {
                   >
                     Certifications
                   </motion.h1>
-                  <h6 className="text-black dark:text-slate-300 w-full">
+                  <h6 className="text-black dark:text-gray-300 w-full">
                     Working with Python is a real thrill for me! These badges showcase the credentials I’ve earned in Python programming after great persistence. Every project feels like a new adventure, and I love seeing what I can come up with next. ⛰️
                   </h6>
                 </div>
@@ -124,7 +124,7 @@ export default function Work() {
             </section>
 
             <section className="pt-20 flex flex-col text-center items-center justify-center">
-              <h6 className="text-black dark:text-slate-300 w-full sm:w-2/3 mb-4">
+              <h6 className="text-black dark:text-gray-300 w-full sm:w-2/3 mb-4">
                 Dabbling into the latest tech like AI and Azure Cloud brings fresh excitement and innovation to my work.
               </h6>
               <Popup />

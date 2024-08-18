@@ -9,10 +9,10 @@ import Head from 'next/head';
 
 export default function Contact() {
   const [isDarkMode, setDarkMode] = React.useState(true);
-  const [hoveredLogo, setHoveredLogo] = React.useState<string | null>(null);
+  const [hoveredLogo, setHoveredLogo] = React.useState(null);
   const [displayText, setDisplayText] = React.useState('CONTACT');
 
-  let hoverTimeout = React.useRef<NodeJS.Timeout | null>(null);
+  let hoverTimeout = React.useRef(null);
 
   const toggleDarkMode = (checked: boolean) => {
     setDarkMode(checked);
@@ -38,7 +38,7 @@ export default function Contact() {
     }
     hoverTimeout.current = setTimeout(() => {
       setDisplayText('CONTACT');
-    }, 200); // 300ms delay for text change
+    }, 200); // 200ms delay for text change
     setHoveredLogo(null);
   };
 
@@ -63,15 +63,15 @@ export default function Contact() {
   return (
     <>
       <Head>
-        <title>Contact - Naman Sonawane</title>
+        <title>Contact ⫽ Naman Sonawane</title>
       </Head>
 
-      <main className={`h-screen relative overflow-hidden ${isDarkMode ? 'dark' : ''}`}>
+      <main className={`h-screen relative ${isDarkMode ? 'dark' : ''}`}>
         <div className="flex justify-center w-auto z-[5000] h-screen sm:h-auto sm:w-screen px-auto md:w-auto md:h-screen lg:w-auto lg:h-screen absolute items-center">
           <FloatingNav navItems={navItems} isDarkMode={isDarkMode} className="z-10" />
         </div>
         
-        <div className="absolute bottom-0 right-0 border-slate-500 border-opacity-25 border-2 m-10 p-2 rounded-[10px] scale-100 hover:scale-120 z-10 flex w-min h-min">
+        <div className="fixed bottom-0 right-0 z-[999] border-gray-500 border-opacity-25 border-2 m-10 p-2 rounded-[10px] scale-100 hover:scale-110 transition-transform duration-300 ease-in-out flex w-min h-min">
           <DarkModeSwitch
             checked={isDarkMode}
             onChange={toggleDarkMode}
@@ -122,8 +122,10 @@ export default function Contact() {
               </h1>
             </div>
           </div>
-          <Footer/>
         </div>
+
+        {/* Footer */}
+        <Footer className="absolute bottom-0 left-0 w-full bg-gray-800 text-white py-4 px-6 text-center z-20" />
       </main>
     </>
   );
