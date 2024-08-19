@@ -8,7 +8,7 @@
     }
 }
 
-body {
+body, html {
     overflow-x: hidden;
 }
 
@@ -26,4 +26,20 @@ body {
         -webkit-text-fill-color: white;
         -webkit-text-stroke: 1px #444444;
     }
+}
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #333; 
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px; 
+    border: 1px solid #CCC;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #777; 
 }
