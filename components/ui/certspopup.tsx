@@ -33,7 +33,7 @@ const Popup: React.FC = () => {
   ];
 
   return (
-    <div className="py-5 flex items-center justify-center">
+    <div className="py-5 flex items-center justify-center h-2/3">
       <Modal>
         <ModalTrigger className="bg-black dark:bg-slate-200 rounded-full dark:text-black text-slate-200 flex justify-center group/modal-btn">
           <span className="group-hover/modal-btn:translate-x-40 text-center transition duration-500">
@@ -44,14 +44,14 @@ const Popup: React.FC = () => {
           </div>
         </ModalTrigger>
         <ModalBody>
-          <ModalContent>
+          <ModalContent className="overflow-y-scroll">
             <h4 className="text-lg md:text-2xl text-neutral-600 dark:text-neutral-100 font-bold text-center mb-4">
               My Achievements
             </h4>
             <p className="text-sm md:text-base text-neutral-500 dark:text-neutral-400 text-center mb-6">
               Here are some of the certifications in Azure Cloud and AI I have earned.<br/> Click on them to view details.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 overflow-scroll md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-4">
               {badgeData.map((badge, index) => (
                 <a
                   key={index}
@@ -63,7 +63,7 @@ const Popup: React.FC = () => {
                   <img
                     src={badge.src}
                     alt={`Badge ${index + 1}`}
-                    className="max-w-full h-auto rounded-lg"
+                    className="max-w-full h-auto rounded-lg w-40"
                   />
                 </a>
               ))}
