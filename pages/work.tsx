@@ -24,21 +24,9 @@ export default function Work() {
   };
 
   const navItems = [
-    {
-      name: "About",
-      link: "/about",
-      icon: <IconHome className="h-4 w-4 text-neutral-500 dark:text-white" />,
-    },
-    {
-      name: "Work",
-      link: "/work",
-      icon: <IconUser className="h-4 w-4 text-neutral-500 dark:text-white" />,
-    },
-    {
-      name: "Contact",
-      link: "/contact",
-      icon: <IconMessage className="h-4 w-4 text-neutral-500 dark:text-white" />,
-    },
+    { name: "Work", link: "/work", icon: <IconUser className="h-4 w-4 text-neutral-500 dark:text-white" /> },
+    { name: "About", link: "/about", icon: <IconHome className="h-4 w-4 text-neutral-500 dark:text-white" /> },
+    { name: "Contact", link: "/contact", icon: <IconMessage className="h-4 w-4 text-neutral-500 dark:text-white" /> },
   ];
 
   return (
@@ -74,13 +62,8 @@ export default function Work() {
           </div>
 
           <div className="relative z-10 w-full max-w-7xl px-5 py-10">
-            <section className="flex flex-col items-center pt-10 mb-16">
-              <div className="flex flex-col items-center">
-                <WorkExperienceCards />
-              </div>
-            </section>
 
-            <section className="mb-16">
+          <section className="mb-16 pt-16">
               <div className="flex flex-col sm:flex-row items-center gap-20 justify-center">
                 <div className="flex flex-col items-start w-min">
                   <motion.h1
@@ -128,6 +111,12 @@ export default function Work() {
                 Dabbling into the latest tech like AI and Azure Cloud brings fresh excitement and innovation to my work.
               </h6>
               <Popup />
+            </section>
+
+            <section className="flex flex-col items-center pt-20 mb-16">
+              <div className="flex flex-col items-center">
+                <WorkExperienceCards />
+              </div>
             </section>
 
             <section className="flex flex-col items-center pt-24 mb-16">

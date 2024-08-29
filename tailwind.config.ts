@@ -210,12 +210,15 @@ const config = {
   plugins: [
     require('tailwind-typewriter')({
       wordsets: {
-          titles: {
-              words: ['Certified Python Programmer', 'Full Stack Developer', 'Innovator'],
-              delay: 0.01
-          }
+        titles: {
+          words: ['Certified Python Programmer', 'Full Stack Developer', 'Innovator'],
+          delay: 0.01, // Time before starting the effect
+          writeSpeed: 0.1, // Speed of typing effect
+          eraseSpeed: 0.05, // Speed of erasing effect
+          pauseBetween: 1, // Pause duration between words
+        }
       }
-    }),
+    }),    
     require('tailwind-typewriter'),
     addVariablesForColors,
     function ({ matchUtilities, theme }: any) {

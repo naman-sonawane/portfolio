@@ -58,7 +58,7 @@ export default function Projects() {
         {
             title: "Notes Webapp",
             href: "https://github.com/naman-sonawane/notes-webapp",
-            description: "A simplistic notes webapp, allowing you to save tasks, ideas, and lists to your local storage.",
+            description: "A simplistic notes webapp (one of my early projects :P), allowing you to save tasks, ideas, and lists to your local storage.",
             className: "bg-gradient-to-br from-gray-500 via-blue-500 to-teal-500",
             skills: [
                 "https://www.svgrepo.com/show/452045/js.svg" // Vanilla JS

@@ -10,10 +10,12 @@ import { IconHome, IconMessage, IconUser } from "@tabler/icons-react";
 import Head from 'next/head';
 import Hobbies from '@/components/ui/hobbies';
 import InfScroller from '@/components/ui/infscroller';
-import Footer from '@/components/ui/footer'
+import Footer from '@/components/ui/footer';
+import { useRouter } from 'next/router'; // Import useRouter
 
 export default function About() {
   const [isDarkMode, setDarkMode] = useState(true);
+  const router = useRouter(); // Initialize router
   const toggleDarkMode = (checked: boolean) => {
     setDarkMode(checked);
   };
@@ -23,9 +25,13 @@ export default function About() {
     visible: { opacity: 1, y: 0, transition: { duration: 2.0, ease: 'easeOut' } },
   };
 
+  const handleBadgeClick = () => {
+    router.push('/work'); // Navigate to /work page
+  };
+
   const navItems = [
-    { name: "About", link: "/about", icon: <IconHome className="h-4 w-4 text-neutral-500 dark:text-white" /> },
     { name: "Work", link: "/work", icon: <IconUser className="h-4 w-4 text-neutral-500 dark:text-white" /> },
+    { name: "About", link: "/about", icon: <IconHome className="h-4 w-4 text-neutral-500 dark:text-white" /> },
     { name: "Contact", link: "/contact", icon: <IconMessage className="h-4 w-4 text-neutral-500 dark:text-white" /> },
   ];
 
@@ -36,11 +42,11 @@ export default function About() {
       </Head>
 
       <main className={`relative ${isDarkMode ? 'dark' : ''}`}>
-      <div className="fixed top-0 left-0 w-full z-[5000] p-4 flex justify-center">
+        <div className="fixed top-0 left-0 w-full z-[5000] p-4 flex justify-center">
           <FloatingNav navItems={navItems} isDarkMode={isDarkMode} className="z-10" />
         </div>
 
-        <div className="fixed bottom-0 right-0 z-[999] border-slate-500 border-opacity-25 border-2 m-10 p-2 rounded-[10px] scale-100 hover:scale-110 transition-transform duration-300 ease-in-out flex w-min h-min">
+        <div className="fixed bottom-0 right-0 z-[999] border-slate-500 border-opacity-25 border-2 m-10 p-2 rounded-[10px] transition-transform duration-300 ease-in-out flex w-min h-min">
           <DarkModeSwitch
             checked={isDarkMode}
             onChange={toggleDarkMode}
@@ -60,14 +66,42 @@ export default function About() {
             </div>
             <div className="relative z-10 h-screen flex justify-center flex-col items-center">
               <div className="flex-col sm:flex-row flex items-center justify-center w-auto space-x-10">
-                <Tooltip title="Naman :)" followCursor>
-                  <Image
-                    src={pfp}
-                    alt="Profile Picture"
-                    className="rounded-full transition-transform w-60 h-60 duration-300 ease-in-out hover:scale-110 hover:rotate-6"
-                  />
-                </Tooltip>
-              <div className="flex flex-col items-left w-2/3 lg:w-1/2 md:w-1/2 space-y-4">
+                <div className="relative flex flex-col items-center">
+                  {/* Badges Section */}
+                  <div className="absolute flex flex-row gap-2 -bottom-8">
+                    <a onClick={handleBadgeClick} className="cursor-pointer">
+                      <img
+                        src="https://images.credly.com/size/150x150/images/37e26478-d80c-43e8-80eb-ec492f3a26c1/image.png"
+                        alt="PCEP Badge"
+                        className="w-16 h-16 hover:drop-shadow-[0_0_8px_#ebcf34] transition-all"
+                      />
+                    </a>
+                    <a onClick={handleBadgeClick} className="cursor-pointer">
+                      <img
+                        src="https://images.credly.com/size/150x150/images/4e248e82-9e87-4a63-9263-250fafe5fb1f/image.png"
+                        alt="PCAP Badge"
+                        className="w-16 h-16 hover:drop-shadow-[0_0_8px_#0c79f5] transition-all"
+                      />
+                    </a>
+                    <a onClick={handleBadgeClick} className="cursor-pointer">
+                      <img
+                        src="https://images.credly.com/size/150x150/images/b790eb12-ecb3-4b94-89be-61aa40c92e7c/image.png"
+                        alt="PCPP Badge"
+                        className="w-16 h-16 hover:drop-shadow-[0_0_8px_#f5430c] transition-all"
+                      />
+                    </a>
+                  </div>
+
+                  {/* Profile Picture */}
+                  <Tooltip title="Naman :)" followCursor>
+                    <Image
+                      src={pfp}
+                      alt="Profile Picture"
+                      className="rounded-full transition-transform w-60 h-60 duration-300 ease-in-out"
+                    />
+                  </Tooltip>
+                </div>
+                <div className="flex flex-col items-left w-2/3 lg:w-1/2 md:w-1/2 space-y-4">
                   <motion.h1
                     initial="hidden"
                     animate="visible"
@@ -77,7 +111,7 @@ export default function About() {
                     I&apos;m a <p className="animate-breathing-gradient bg-rainbow-gradient bg-clip-text text-transparent">Full-Stack Developer</p> working in Toronto, CA.
                   </motion.h1>
                   <h6 className="text-black dark:text-slate-400 w-2/3 sm:w-3/4">
-                  I love diving into both backend and frontend work. Whether crafting UI/UX or sorting out server-side logic, I relish the challenge and creativity along the journey. I&apos;m a passionate self-learner and enjoy exploring new technologies.
+                    I love diving into both backend and frontend work. Whether crafting UI/UX or sorting out server-side logic, I relish the challenge and creativity along the journey. I&apos;m a passionate self-learner and enjoy exploring new technologies.
                   </h6>
                 </div>
               </div>

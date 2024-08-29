@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-    ::selection {
-        background-color: #a17af5;
-    }
-}
-
 body, html {
     overflow-x: hidden;
 }

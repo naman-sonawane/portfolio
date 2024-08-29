@@ -27,21 +27,23 @@ const Popup: React.FC = () => {
       url: "https://credentials.databricks.com/82633c06-a728-40c9-95d3-6fee7d3cf855",
     },
     {
-        src: "https://www.databricks.com/sites/default/files/2021/12/lakehouse-fundamentals.png",
-        url: "/genai.png",
+      src: "https://www.databricks.com/sites/default/files/2021/12/lakehouse-fundamentals.png",
+      url: "/genai.png",
     }
   ];
 
   return (
     <div className="py-5 flex items-center justify-center h-2/3">
       <Modal>
-        <ModalTrigger className="bg-black dark:bg-slate-200 rounded-full dark:text-black text-slate-200 flex justify-center group/modal-btn">
-          <span className="group-hover/modal-btn:translate-x-40 text-center transition duration-500">
-            See more
+        <ModalTrigger className="relative dark:bg-black dark:text-slate-200 bg-white text-black rounded-full flex items-center justify-center p-4 overflow-hidden group">
+        <span className="absolute inset-0 bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(56,189,248,0.6)_0%,rgba(56,189,248,0)_75%)] transition-opacity duration-500 opacity-100 rounded-full" />
+        <span className="relative z-10 text-center transition-transform duration-500 group-hover:translate-x-40">
+            See more ⚡
           </span>
-          <div className="-translate-x-40 group-hover/modal-btn:translate-x-0 flex items-center justify-center absolute inset-0 transition duration-500 text-white z-20">
-          ⚡
+          <div className="absolute inset-0 flex items-center justify-center text-white transition-transform duration-500 -translate-x-40 group-hover:translate-x-0 z-20">
+            ⚡
           </div>
+          <div className="absolute inset-0 border-[1px] border-green-400 rounded-full pointer-events-none transition-transform duration-500 group-hover:scale-110"></div>
         </ModalTrigger>
         <ModalBody>
           <ModalContent className="overflow-y-scroll">
@@ -49,7 +51,7 @@ const Popup: React.FC = () => {
               My Achievements
             </h4>
             <p className="text-sm md:text-base text-neutral-500 dark:text-neutral-400 text-center mb-6">
-              Here are some of the certifications in Azure Cloud and AI I have earned.<br/> Click on them to view details.
+              Here are some of the certifications in Azure Cloud and AI I have earned.<br /> Click on them to view details.
             </p>
             <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-4">
               {badgeData.map((badge, index) => (
