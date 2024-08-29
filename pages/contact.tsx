@@ -29,7 +29,7 @@ export default function Contact() {
 
     hoverTimeout.current = setTimeout(() => {
       setDisplayText(logoName.toUpperCase());
-    }, 300); // 300ms delay for text change
+    }, 300); 
   };
 
   const handleMouseLeave = () => {
@@ -39,7 +39,7 @@ export default function Contact() {
     }
     hoverTimeout.current = setTimeout(() => {
       setDisplayText('CONTACT');
-    }, 200); // 200ms delay for text change
+    }, 200); 
     setHoveredLogo(null);
   };
 

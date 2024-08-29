@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { database, ref, set, onValue } from '../../lib/firebase'; // Adjust the import path as needed
+import { database, ref, set, onValue } from '../../lib/firebase'; 
 import HeartIcon from '@/components/ui/hearticon'
 
 const Counter: React.FC = () => {

@@ -212,10 +212,10 @@ const config = {
       wordsets: {
         titles: {
           words: ['Certified Python Programmer', 'Full Stack Developer', 'Innovator'],
-          delay: 0.01, // Time before starting the effect
-          writeSpeed: 0.1, // Speed of typing effect
-          eraseSpeed: 0.05, // Speed of erasing effect
-          pauseBetween: 1, // Pause duration between words
+          delay: 0.01, 
+          writeSpeed: 0.1, 
+          eraseSpeed: 0.05, 
+          pauseBetween: 1, 
         }
       }
     }),    

@@ -31,7 +31,7 @@ export default function Projects() {
             skills: [
                 "https://www.svgrepo.com/show/378837/node.svg", // Node.js
                 "https://svgl.app/library/groq.svg", // Groq AI
-                "/css.svg" // Vanilla CSS
+                "/css.svg" 
             ]
         },
         {
@@ -52,7 +52,7 @@ export default function Projects() {
             skills: [
                 "https://www.svgrepo.com/show/452045/js.svg", // JavaScript (Next.js dependency)
                 "https://www.svgrepo.com/show/374118/tailwind.svg", // Tailwind
-                "/framer.svg" // Framer Motion
+                "/framer.svg" 
             ]
         },
         {

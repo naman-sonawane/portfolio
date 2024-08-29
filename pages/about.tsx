@@ -11,11 +11,11 @@ import Head from 'next/head';
 import Hobbies from '@/components/ui/hobbies';
 import InfScroller from '@/components/ui/infscroller';
 import Footer from '@/components/ui/footer';
-import { useRouter } from 'next/router'; // Import useRouter
+import { useRouter } from 'next/router'; 
 
 export default function About() {
   const [isDarkMode, setDarkMode] = useState(true);
-  const router = useRouter(); // Initialize router
+  const router = useRouter(); 
   const toggleDarkMode = (checked: boolean) => {
     setDarkMode(checked);
   };
@@ -26,7 +26,7 @@ export default function About() {
   };
 
   const handleBadgeClick = () => {
-    router.push('/work'); // Navigate to /work page
+    router.push('/work'); 
   };
 
   const navItems = [
@@ -67,7 +67,7 @@ export default function About() {
             <div className="relative z-10 h-screen flex justify-center flex-col items-center">
               <div className="flex-col sm:flex-row flex items-center justify-center w-auto space-x-10">
                 <div className="relative flex flex-col items-center">
-                  {/* Badges Section */}
+                  {}
                   <div className="absolute flex flex-row gap-2 -bottom-8">
                     <a onClick={handleBadgeClick} className="cursor-pointer">
                       <img
@@ -92,7 +92,7 @@ export default function About() {
                     </a>
                   </div>
 
-                  {/* Profile Picture */}
+                  {}
                   <Tooltip title="Naman :)" followCursor>
                     <Image
                       src={pfp}
