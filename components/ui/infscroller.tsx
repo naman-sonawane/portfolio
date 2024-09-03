@@ -126,6 +126,12 @@ const tools: Skill[] = [
     color: "#FFFFFF"
   },
   {
+    title: "Postman",
+    iconUrl: "https://www.svgrepo.com/show/354202/postman-icon.svg",
+    link: "https://www.postman.com/",
+    color: "#EF5B25"
+  },
+  {
     title: "Git",
     iconUrl: "/git.svg",
     link: "https://git-scm.com/",
