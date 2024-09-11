@@ -29,6 +29,17 @@ export default function WorkExperienceCards() {
       duration: "May 2024 - Present",
     },
     {
+      title: "Tech & Web Dev Executive",
+      companyName: "EurekaHacks",
+      description: "Led technical and web development initiatives for EurekaHacks, a large-scale hackathon. Coordinated between teams to deliver a seamless event experience by developing and implementing the website and event platforms. Demonstrated leadership by managing tech support teams, addressing technical challenges in real-time, and ensuring smooth execution for over 150 participants.",
+      skills: [
+        "https://www.svgrepo.com/show/452202/figma.svg",
+        "/next.svg",
+        "https://www.svgrepo.com/show/374146/typescript-official.svg",
+      ],
+      duration: "September 2023 - Present",
+    },
+    {
       title: "Web Developer + Organizer",
       companyName: "Hackathons Canada",
       description: "Developed a database to help programming enthusiasts find ongoing hackathons. Designed and developed the dashboard and landing page for Hack Canada, while also organizing the hackathon event.",
