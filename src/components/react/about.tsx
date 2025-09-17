@@ -83,7 +83,7 @@ export const About = () => {
         transition={{ duration: 0.5, ease: 'easeInOut' }}
       >
         <motion.h3 
-          className="certifications-heading description lighter text-sm font-medium mb-1"
+          className="certifications-heading instrument lighter text-sm font-medium mb-1"
         >
           Certifications
         </motion.h3>
@@ -164,7 +164,7 @@ export const About = () => {
       transition={{ duration: 0.6, ease: 'easeInOut' }}
     >
       <motion.h3 
-        className="certifications-heading description lighter text-sm font-medium mb-4"
+        className="certifications-heading instrument lighter text-sm font-medium mb-4"
       >
         Certifications
       </motion.h3>

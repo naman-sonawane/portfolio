@@ -88,16 +88,8 @@ export const Projects = () => {
           <span className="project-title text-lg text-white">
             Projects
           </span>
-          <motion.img
-            src="/work.svg"
-            alt="work"
-            height={14}
-            width={14}
-            className="project"
-            whileHover={{ rotate: 5 }}
-          />
         </motion.div>
-
+         
         <motion.div 
           className="flex-1 overflow-y-auto space-y-3" 
           style={{
@@ -164,17 +156,9 @@ export const Projects = () => {
       <motion.div 
         className="origin-top-left scale-[0.92] flex items-center justify-between"
       >
-        <span className="project-title text-2xl text-white">
+        <span className="project-title text-2xl instrument lighter">
           Projects
         </span>
-        <motion.img
-          src="/work.svg"
-          alt="work"
-          height={20}
-          width={20}
-          className="project"
-          whileHover={{ rotate: 5 }}
-        />
       </motion.div>
 
       <motion.div

@@ -76,7 +76,7 @@ export const WorkExperience = () => {
         <motion.div 
           className="flex items-center justify-between mb-6 flex-shrink-0"
         >
-          <span className="work-title text-2xl text-white font-light">
+          <span className="work-title text-2xl instrument lighter font-light">
             Experience
           </span>
         </motion.div>
@@ -150,7 +150,7 @@ export const WorkExperience = () => {
       <motion.div 
         className="flex items-center justify-between mb-4 flex-shrink-0"
       >
-        <span className="work-title text-xl text-white font-light">
+        <span className="work-title text-xl instrument lighter font-light">
           Experience
         </span>
       </motion.div>

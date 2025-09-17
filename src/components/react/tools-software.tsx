@@ -160,7 +160,7 @@ export const ToolsSoftware = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.1 }}
       >
-        <span className="tools-title text-xl text-white font-light">
+        <span className="tools-title text-xl instrument lighter font-light">
           Tools & Software
         </span>
       </motion.div>

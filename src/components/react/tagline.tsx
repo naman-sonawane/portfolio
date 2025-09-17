@@ -28,13 +28,6 @@ export const Tagline = () => {
 
   return (
     <div className="tagline-container col-span-5 bg-[#161711] rounded-xl p-4 relative">
-      <img
-        src="/airpords.svg"
-        alt="airpods"
-        className="airpods absolute right-6"
-        height={20}
-        width={20}
-      />
 
       <div className="absolute instrument bottom-12 text-xl tagline-text">
         Hey, <span className="italic">welcome. </span>
