@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+.main-body {
+  font-family: "Raleway", sans-serif;
+    color: #a8977a;
+}
+
+.brown {
+      color: #44362b;
+}
+
+.brown {
+      color: whitesmoke;
+}
+
+.lighter {
+  color: #a8977a
+}
+
+.description {
+  font-family: "Raleway", sans-serif;
+  font-size:medium;
+line-height: 150%;
+  color: #a8977a;
+}
+
+.instrument {
+  font-family: 'Instrument Serif', sans-serif;
+}
+
+
+.ns-transition-overlay {
+  pointer-events: none;
+  transform: translateY(0%);
+  will-change: transform;
+}
+
+.ns-ssr-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #a8977a;
+  color: #44362b;
+  font-family: 'Instrument Serif', sans-serif;
+  font-size: 3rem;
+  letter-spacing: 0.05em;
+  transform: translateY(0%);
+  transition: transform 0.6s ease-in-out;
+}
+.ns-ssr-overlay.hide {
+  transform: translateY(-100%);
+}
+
+::selection {
+  background-color: #a8977a;
+  color: #44362b;
+}
+
+::-moz-selection {
+  background-color: #a8977a;
+  color: #44362b;
+}
+
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.work-container .overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.work-container .overflow-y-auto::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.work-container .overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+}
+
+.work-container .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 768px) {
+  .main-body {
+    padding: 0.75rem;
+  }
+  
+  .certifications-container {
+    margin-bottom: 1rem;
+  }
+  
+  .work-container {
+    margin-bottom: 1rem;
+  }
+  
+  .mobile-certs {
+    margin-top: 1rem;
+  }
+  
+  .description {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  
+  .cert-icon {
+    min-height: 10px;
+  }
+  
+  .work-item {
+    margin-bottom: 1.5rem;
+  }
+}

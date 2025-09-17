@@ -1,0 +1,1 @@
+export const PHOTO_ANIMATION_DURATION = 1.2;

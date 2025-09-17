@@ -1,0 +1,201 @@
+---
+import "../styles/global.css";
+import { Navbar } from "../components/react/navbar";
+import { WorkExperience } from "../components/react/work-experience";
+import { ToolsSoftware } from "../components/react/tools-software";
+import { Socials } from "../components/react/socials";
+import { About } from "../components/react/about";
+import TransitionOverlay from "../components/react/transition-overlay";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preload" as="image" href="/work.svg">
+    <meta name="generator" content={Astro.generator} />
+    <title>Work - Naman Sonawane</title>
+  </head>
+
+  <body class="bg-[#44362b] p-4 main-body h-screen flex flex-col gap-y-4">
+    <div id="ns-ssr-overlay" class="ns-ssr-overlay">NS</div>
+    <TransitionOverlay client:load />
+    <Navbar client:load />
+
+    <div class="grid grid-cols-12 gap-4 h-[calc(100vh-70px-32px-4px)] min-h-0 overflow-hidden">
+      
+      <div class="col-span-8 h-full min-h-0">
+        <WorkExperience client:load />
+      </div>
+
+      
+      <div class="col-span-4 flex flex-col gap-y-4 h-full min-h-0">
+        
+        <div id="tools-wrapper" class="flex-1 min-h-0">
+          <ToolsSoftware client:load />
+        </div>
+
+        
+        <div id="socials-wrapper">
+          <Socials client:load />
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="mobile-certs hidden">
+      <About client:load />
+    </div>
+
+    <script>
+      
+      (function() {
+        /** @param {HTMLAnchorElement} a */
+        function isInternalLink(a: HTMLAnchorElement) {
+          return a.host === window.location.host && !a.target && !a.href.startsWith('mailto:') && !a.href.startsWith('tel:');
+        }
+        document.addEventListener('click', function(e) {
+          const path = (e.composedPath ? e.composedPath() : []) as any[];
+          let anchor: HTMLAnchorElement | null = null;
+          for (const el of path) {
+            const node = el as HTMLElement;
+            if (node && (node as HTMLElement).tagName === 'A') { anchor = node as HTMLAnchorElement; break; }
+          }
+          if (!anchor) {
+            const t = e.target as Element | null;
+            if (t && (t as Element).closest) anchor = (t as Element).closest('a') as HTMLAnchorElement | null;
+          }
+          if (!anchor) return;
+          if (!isInternalLink(anchor)) return;
+          const href = anchor.getAttribute('href');
+          if (!href || href.startsWith('#')) return;
+          e.preventDefault();
+          window.dispatchEvent(new CustomEvent('page-transition', { detail: { href } }));
+        }, true);
+      })();
+
+      
+      function handleMobileLayout() {
+        const isMobile = window.innerWidth < 768;
+        const body = document.body;
+        const mainGrid = document.querySelector('.grid');
+        const mobileCerts = document.querySelector('.mobile-certs');
+        const gridContainer = mainGrid ? (mainGrid as HTMLElement) : null;
+        const workContainer = mainGrid ? (mainGrid as HTMLElement).children[0] as HTMLElement | undefined : undefined; 
+        const rightColumn = mainGrid ? (mainGrid as HTMLElement).children[1] as HTMLElement | undefined : undefined; 
+        const toolsWrapper = document.getElementById('tools-wrapper') as HTMLElement | null;
+        const socialsWrapper = document.getElementById('socials-wrapper') as HTMLElement | null;
+        
+        if (isMobile) {
+          
+          body.className = 'bg-[#44362b] p-3 main-body min-h-screen flex flex-col gap-y-6';
+          if (mainGrid) {
+            mainGrid.className = 'flex flex-col gap-y-6 min-h-0 overflow-y-auto flex-1';
+            (mainGrid as HTMLElement).style.height = 'auto';
+            
+            if (rightColumn && workContainer && gridContainer) {
+              
+              if (gridContainer.firstElementChild !== rightColumn) {
+                gridContainer.insertBefore(rightColumn, workContainer);
+              }
+              
+              if (toolsWrapper && mobileCerts) {
+                const afterTools = toolsWrapper.nextSibling;
+                if (afterTools !== mobileCerts) {
+                  if (afterTools) {
+                    rightColumn.insertBefore(mobileCerts, afterTools);
+                  } else {
+                    rightColumn.appendChild(mobileCerts);
+                  }
+                }
+              } else if (mobileCerts && rightColumn && mobileCerts.parentElement !== rightColumn) {
+                
+                rightColumn.appendChild(mobileCerts);
+              }
+              
+              if (socialsWrapper && mobileCerts && socialsWrapper.previousElementSibling !== mobileCerts) {
+                rightColumn.insertBefore(socialsWrapper, workContainer); 
+                rightColumn.insertBefore(socialsWrapper, workContainer); 
+              }
+              
+              if (gridContainer.lastElementChild !== workContainer) {
+                gridContainer.appendChild(workContainer);
+              }
+            }
+          }
+          if (mobileCerts) {
+            mobileCerts.className = 'mobile-certs block mt-4';
+            
+            if (gridContainer && rightColumn && workContainer) {
+              
+              if (gridContainer.firstElementChild !== rightColumn) {
+                gridContainer.insertBefore(rightColumn, workContainer);
+              }
+              
+              const afterRight = rightColumn.nextSibling;
+              if (afterRight !== mobileCerts) {
+                if (afterRight) {
+                  gridContainer.insertBefore(mobileCerts, afterRight);
+                } else {
+                  gridContainer.appendChild(mobileCerts);
+                }
+              }
+              
+              if (gridContainer.lastElementChild !== workContainer) {
+                gridContainer.appendChild(workContainer);
+              }
+            }
+          }
+        } else {
+          
+          body.className = 'bg-[#44362b] p-4 main-body h-screen flex flex-col gap-y-4';
+          if (mainGrid) {
+            mainGrid.className = 'grid grid-cols-12 gap-4 h-[calc(100vh-70px-32px-4px)] min-h-0 overflow-hidden';
+            (mainGrid as HTMLElement).style.height = '';
+            
+            if (rightColumn && workContainer && gridContainer) {
+              if (gridContainer.firstElementChild !== workContainer) {
+                gridContainer.insertBefore(workContainer, rightColumn);
+              }
+              if (gridContainer.children[1] !== rightColumn) {
+                gridContainer.insertBefore(rightColumn, gridContainer.children[1] || null);
+              }
+            }
+          }
+          if (mobileCerts) {
+            mobileCerts.className = 'mobile-certs hidden';
+            
+            const parent = mobileCerts.parentElement;
+            if (parent && gridContainer && gridContainer.nextSibling !== mobileCerts) {
+              if (gridContainer.nextSibling) {
+                parent.insertBefore(mobileCerts, gridContainer.nextSibling);
+              } else {
+                parent.appendChild(mobileCerts);
+              }
+            }
+          }
+        }
+      }
+
+      
+      handleMobileLayout();
+      window.addEventListener('resize', handleMobileLayout);
+      
+      (function() {
+        const hide = () => {
+          const el = document.getElementById('ns-ssr-overlay');
+          if (!el) return;
+          el.classList.add('hide');
+          setTimeout(() => el.parentElement && el.parentElement.removeChild(el), 800);
+        };
+        window.addEventListener('ns-overlay-mounted', hide, { once: true });
+        window.addEventListener('ns-overlay-uncovered', hide, { once: true });
+        window.addEventListener('load', () => setTimeout(hide, 700));
+      })();
+    </script>
+  </body>
+</html>
