@@ -4,7 +4,7 @@ export const Contact = () => {
   return (
     <a
       href="/work"
-      className="contact-container bg-[#a8977a] text-[#44362b] rounded-xl p-4 relative"
+      className="contact-container bg-[#ffe1c6] text-[#3a4664] rounded-xl p-4 relative"
     >
       <img
         src="/top-right.svg"

@@ -139,7 +139,7 @@ export const ToolsSoftware = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 1.0 }}
         >
-          <p className="text-[#a8977a] text-xs italic text-center">
+          <p className="text-[#ffe1c6] text-xs italic text-center">
             "the deeper you go, the more you realize how endless the sea of possibilities actually is."
           </p>
         </motion.div>
@@ -258,7 +258,7 @@ export const ToolsSoftware = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 1.0 }}
         >
-          <p className="text-[#a8977a] text-xs italic text-center">
+          <p className="text-[#ffe1c6] text-xs italic text-center">
             "the deeper you go, the more you realize how endless the sea of possibilities actually is."
           </p>
         </motion.div>

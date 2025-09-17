@@ -21,7 +21,7 @@ import TransitionOverlay from "../components/react/transition-overlay";
     <title>Work - Naman Sonawane</title>
   </head>
 
-  <body class="bg-[#44362b] p-4 main-body h-screen flex flex-col gap-y-4">
+  <body class="bg-[#3a4664] p-4 main-body h-screen flex flex-col gap-y-4">
     <div id="ns-ssr-overlay" class="ns-ssr-overlay">NS</div>
     <TransitionOverlay client:load />
     <Navbar client:load />
@@ -92,7 +92,7 @@ import TransitionOverlay from "../components/react/transition-overlay";
         
         if (isMobile) {
           
-          body.className = 'bg-[#44362b] p-3 main-body min-h-screen flex flex-col gap-y-6';
+          body.className = 'bg-[#3a4664] p-3 main-body min-h-screen flex flex-col gap-y-6';
           if (mainGrid) {
             mainGrid.className = 'flex flex-col gap-y-6 min-h-0 overflow-y-auto flex-1';
             (mainGrid as HTMLElement).style.height = 'auto';
@@ -152,7 +152,7 @@ import TransitionOverlay from "../components/react/transition-overlay";
           }
         } else {
           
-          body.className = 'bg-[#44362b] p-4 main-body h-screen flex flex-col gap-y-4';
+          body.className = 'bg-[#3a4664] p-4 main-body h-screen flex flex-col gap-y-4';
           if (mainGrid) {
             mainGrid.className = 'grid grid-cols-12 gap-4 h-[calc(100vh-70px-32px-4px)] min-h-0 overflow-hidden';
             (mainGrid as HTMLElement).style.height = '';

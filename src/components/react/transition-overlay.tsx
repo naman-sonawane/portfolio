@@ -63,7 +63,7 @@ export const TransitionOverlay = () => {
 
   return (
     <motion.div
-      className="ns-transition-overlay fixed inset-0 z-[9999] flex items-center justify-center bg-[#a8977a] text-[#44362b]"
+      className="ns-transition-overlay fixed inset-0 z-[9999] flex items-center justify-center bg-[#ffe1c6] text-[#3a4664]"
       initial={{ y: "0%" }}
       animate={controls}
       style={{ willChange: "transform" }}
