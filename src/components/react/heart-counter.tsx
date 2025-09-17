@@ -80,19 +80,37 @@ export const HeartCounter = () => {
   };
 
   const getHeartFill = () => {
-    if (count >= 300) {
-      return { type: "solid" as const, value: "#ffffff" };
+    if (count >= 1000) {
+      return { type: "gradient" as const, value: "heartGradWhiteGray" };
     }
-    if (count >= 200) {
+    if (count >= 850) {
+      return { type: "gradient" as const, value: "heartGradRainbow" };
+    }
+    if (count >= 600) {
+      return { type: "gradient" as const, value: "heartGradGold" };
+    }
+    if (count >= 450) {
       return { type: "gradient" as const, value: "heartGradBluePurple" };
     }
-    if (count >= 100) {
+    if (count >= 300) {
       return { type: "gradient" as const, value: "heartGradGreenYellow" };
     }
-    if (count >= 20) {
+    if (count >= 150) {
       return { type: "gradient" as const, value: "heartGradRedPink" };
     }
-    return { type: "solid" as const, value: "#ffffff" };
+    if (count >= 25) {
+      return { type: "solid" as const, value: "#f59e0b" };
+    }
+    if (count >= 10) {
+      return { type: "gradient" as const, value: "heartGradThemeSlate" };
+    }
+    if (count >= 5) {
+      return { type: "gradient" as const, value: "heartGradThemeOlive" };
+    }
+    if (count >= 1) {
+      return { type: "gradient" as const, value: "heartGradThemeSand" };
+    }
+    return { type: "solid" as const, value: "#ffe1c6" };
   };
 
   const getButtonGradientClasses = () => {
@@ -141,7 +159,7 @@ export const HeartCounter = () => {
             width="20"
             height="20"
             viewBox="0 0 24 24"
-            className="animate-pulse"
+            className={`animate-pulse ${count >= 1000 ? 'spin-slow' : ''}`}
           >
             <defs>
               <linearGradient id="heartGradRedPink" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -154,6 +172,34 @@ export const HeartCounter = () => {
               </linearGradient>
               <linearGradient id="heartGradBluePurple" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#3b82f6" />
+                <stop offset="100%" stopColor="#8b5cf6" />
+              </linearGradient>
+              <linearGradient id="heartGradThemeSand" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#ffe1c6" />
+                <stop offset="100%" stopColor="#f5d4b2" />
+              </linearGradient>
+              <linearGradient id="heartGradThemeOlive" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#61643a" />
+                <stop offset="100%" stopColor="#7a7d50" />
+              </linearGradient>
+              <linearGradient id="heartGradThemeSlate" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#3a4664" />
+                <stop offset="100%" stopColor="#5a6585" />
+              </linearGradient>
+              <linearGradient id="heartGradGold" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#f59e0b" />
+                <stop offset="100%" stopColor="#fbbf24" />
+              </linearGradient>
+              <linearGradient id="heartGradWhiteGray" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#ffffff" />
+                <stop offset="100%" stopColor="#d1d5db" />
+              </linearGradient>
+              <linearGradient id="heartGradRainbow" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#ef4444" />
+                <stop offset="20%" stopColor="#f59e0b" />
+                <stop offset="40%" stopColor="#eab308" />
+                <stop offset="60%" stopColor="#22c55e" />
+                <stop offset="80%" stopColor="#3b82f6" />
                 <stop offset="100%" stopColor="#8b5cf6" />
               </linearGradient>
             </defs>

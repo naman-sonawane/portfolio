@@ -72,23 +72,41 @@ const NavHeart: React.FC<NavHeartProps> = ({ className }) => {
   };
 
   const getHeartFill = () => {
-    if (localCount >= 300) {
-      return '#ffffff';
+    if (localCount >= 1000) {
+      return 'url(#heartGradWhiteGray)';
     }
-    if (localCount >= 200) {
+    if (localCount >= 850) {
+      return 'url(#heartGradRainbow)';
+    }
+    if (localCount >= 600) {
+      return 'url(#heartGradGold)';
+    }
+    if (localCount >= 450) {
       return 'url(#heartGradBluePurple)';
     }
-    if (localCount >= 100) {
+    if (localCount >= 300) {
       return 'url(#heartGradGreenYellow)';
     }
-    if (localCount >= 20) {
+    if (localCount >= 150) {
       return 'url(#heartGradRedPink)';
     }
-    return hasClicked ? '#f59e0b' : 'none';
+    if (localCount >= 25) {
+      return '#f59e0b';
+    }
+    if (localCount >= 10) {
+      return 'url(#heartGradThemeSlate)';
+    }
+    if (localCount >= 5) {
+      return 'url(#heartGradThemeOlive)';
+    }
+    if (localCount >= 1) {
+      return 'url(#heartGradThemeSand)';
+    }
+    return '#ffe1c6';
   };
 
   const heartFill = useMemo(() => getHeartFill(), [hasClicked, localCount]);
-  const heartStroke = useMemo(() => (hasClicked ? 'transparent' : '#5C4033'), [hasClicked]);
+  const heartStroke = useMemo(() => ('transparent'), []);
 
   return (
     <button
@@ -110,6 +128,7 @@ const NavHeart: React.FC<NavHeartProps> = ({ className }) => {
         fill={heartFill}
         stroke={heartStroke}
         strokeWidth="1.8"
+        className={localCount >= 1000 ? 'spin-slow' : ''}
       >
         <defs>
           <linearGradient id="heartGradRedPink" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -122,6 +141,34 @@ const NavHeart: React.FC<NavHeartProps> = ({ className }) => {
           </linearGradient>
           <linearGradient id="heartGradBluePurple" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="#3b82f6" />
+            <stop offset="100%" stopColor="#8b5cf6" />
+          </linearGradient>
+          <linearGradient id="heartGradThemeSand" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#ffe1c6" />
+            <stop offset="100%" stopColor="#f5d4b2" />
+          </linearGradient>
+          <linearGradient id="heartGradThemeOlive" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#61643a" />
+            <stop offset="100%" stopColor="#7a7d50" />
+          </linearGradient>
+          <linearGradient id="heartGradThemeSlate" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#3a4664" />
+            <stop offset="100%" stopColor="#5a6585" />
+          </linearGradient>
+          <linearGradient id="heartGradGold" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#f59e0b" />
+            <stop offset="100%" stopColor="#fbbf24" />
+          </linearGradient>
+          <linearGradient id="heartGradWhiteGray" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="100%" stopColor="#d1d5db" />
+          </linearGradient>
+          <linearGradient id="heartGradRainbow" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#ef4444" />
+            <stop offset="20%" stopColor="#f59e0b" />
+            <stop offset="40%" stopColor="#eab308" />
+            <stop offset="60%" stopColor="#22c55e" />
+            <stop offset="80%" stopColor="#3b82f6" />
             <stop offset="100%" stopColor="#8b5cf6" />
           </linearGradient>
         </defs>
