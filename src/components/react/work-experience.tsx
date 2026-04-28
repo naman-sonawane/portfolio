@@ -4,7 +4,7 @@ import { useOverlayReady } from "./use-overlay-ready";
 
 const workData = [
   {
-    title: "AI/NLP Code Evaluator",
+    title: "AI/NLP Code Evaluation Team",
     company: "Cohere",
     period: "Sep 2025 – Present",
     description: "Optimizing ML models for enterprises through large-scale data validation.",
