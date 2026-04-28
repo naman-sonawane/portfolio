@@ -4,48 +4,42 @@ import { useOverlayReady } from "./use-overlay-ready";
 
 const workData = [
   {
-    title: "Code Sensei (Coding Instructor)",
+    title: "AI/NLP Code Evaluator",
+    company: "Cohere",
+    period: "Sep 2025 – Present",
+    description: "Optimizing ML models for enterprises through large-scale data validation.",
+    skills: ["Python", "FastAPI", "React", "ML/AI", "NLP"]
+  },
+  {
+    title: "ML/AI Research Assistant",
+    company: "Massachusetts Institute of Technology",
+    period: "Jul 2025 – Sep 2025",
+    description: "Developing innovative LLM solutions through MCP integrations for Mantis at MIT CSAIL.",
+    skills: ["LLMs", "MCP", "Research", "Python"]
+  },
+  {
+    title: "Software Programming Instructor",
     company: "Code Ninjas",
-    period: "Mar 2023 – Present",
-    description: "Teach kids programming with JavaScript, Python, C#, and Lua using platforms like Roblox, Unity, and Scratch.",
-    skills: ["Teaching", "Mentoring", "Team Leadership"]
+    period: "Mar 2023 – Jun 2025",
+    description: "Creating interactive programming modules and activities for students while collaborating with curriculum teams.",
+    skills: ["JavaScript", "Python", "Teaching", "Lua"]
   },
   {
-    title: "Full Stack Engineer",
-    company: "Scripty",
-    period: "May 2024 – Present",
-    description: "Building an AI-powered task automation assistant with $1,000 AWS credits from Amazon to drive growth.",
-    skills: ["React.js", "REST APIs", "Groq", "AWS"]
-  },
-  {
-    title: "VP of Product Design",
+    title: "UI/UX Designer",
     company: "Hack Canada",
-    period: "Jul 2025 – Present",
-    description: "Design and oversee hackathon platforms attracting 1,200+ applications, 450+ participants, and 20+ sponsors.",
-    skills: ["Product Design", "Web Development", "Event Management"]
+    period: "Mar 2024 – Apr 2025",
+    description: "Designed intuitive landing and application pages attracting 1200+ applications and 20+ sponsors.",
+    skills: ["UI/UX Design", "Figma", "Web Design"]
   },
   {
-    title: "Tech Executive",
-    company: "EurekaHacks",
-    period: "Sep 2024 – Apr 2025",
-    description: "Built and maintained hackathon platform, coordinated technical teams, and supported 150+ participants.",
-    skills: ["Next.js", "Figma", "Team Leadership"]
-  },
-  {
-    title: "Organizer",
-    company: "Apocalypse",
-    period: "Mar 2024 – May 2024",
-    description: "Planned and managed hackathon logistics and web development for a smooth event experience.",
-    skills: ["Project Planning", "Web Development"]
-  },
-  {
-    title: "UI/UX Developer",
-    company: "Factful",
-    period: "Mar 2023 – Feb 2024",
-    description: "Designed intuitive interfaces and built AI-powered fact-checking tools to combat misinformation.",
-    skills: ["UI/UX Design", "React.js", "Python"]
+    title: "Full-Stack Engineer",
+    company: "Scripty",
+    period: "Apr 2023 – Mar 2024",
+    description: "Developing user-friendly and easy to navigate UI and frontend components.",
+    skills: ["React.js", "Full-Stack", "Frontend"]
   }
 ];
+
 
 
 export const WorkExperience = () => {
