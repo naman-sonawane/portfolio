@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import { SONGS } from "../../constant/songs";
 
 export const MusicPlayer = () => {
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -9,7 +11,7 @@ export const MusicPlayer = () => {
   const progressRef = useRef<HTMLDivElement>(null);
   const waveIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-
+  const currentSong = SONGS[currentSongIndex];
   
   useEffect(() => {
     if (isPlaying) {
@@ -54,12 +56,13 @@ export const MusicPlayer = () => {
       if (audio.duration && !isNaN(audio.duration)) {
         setDuration(audio.duration);
       }
+      if (isPlaying) {
+        audio.play().catch(err => console.warn("Auto-play failed:", err));
+      }
     };
     
     const handleEnded = () => {
-      setIsPlaying(false);
-      audio.currentTime = 0;
-      audio.play(); 
+      handleNext();
     };
 
     const handleError = () => {
@@ -74,9 +77,6 @@ export const MusicPlayer = () => {
     audio.addEventListener('ended', handleEnded);
     audio.addEventListener('error', handleError);
 
-    
-    audio.load();
-
     return () => {
       audio.removeEventListener('timeupdate', updateTime);
       audio.removeEventListener('loadedmetadata', updateDuration);
@@ -85,7 +85,7 @@ export const MusicPlayer = () => {
       audio.removeEventListener('ended', handleEnded);
       audio.removeEventListener('error', handleError);
     };
-  }, []);
+  }, [currentSongIndex, isPlaying]);
 
   const togglePlayPause = () => {
     const audio = audioRef.current;
@@ -97,6 +97,14 @@ export const MusicPlayer = () => {
       audio.play();
     }
     setIsPlaying(!isPlaying);
+  };
+
+  const handleNext = () => {
+    setCurrentSongIndex((prev) => (prev + 1) % SONGS.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentSongIndex((prev) => (prev - 1 + SONGS.length) % SONGS.length);
   };
 
   const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -124,8 +132,8 @@ export const MusicPlayer = () => {
     <div className="music-container bg-[#161711] rounded-xl p-3">
       <audio
         ref={audioRef}
-        src="/song.mp3"
-        loop
+        key={currentSong.src}
+        src={currentSong.src}
         preload="metadata"
       />
       
@@ -134,9 +142,8 @@ export const MusicPlayer = () => {
         
         <div className="flex items-center justify-end space-x-2">
           <button
-            onClick={() => {}}
+            onClick={handlePrev}
             className="text-white/60 hover:text-white/80 transition-colors duration-200"
-            disabled
           >
             <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
               <path d="M8.445 14.832A1 1 0 0010 14v-2.798l5.445 3.63A1 1 0 0017 14V6a1 1 0 00-1.555-.832L10 8.798V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4z" />
@@ -159,9 +166,8 @@ export const MusicPlayer = () => {
           </button>
 
           <button
-            onClick={() => {}}
+            onClick={handleNext}
             className="text-white/60 hover:text-white/80 transition-colors duration-200"
-            disabled
           >
             <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
               <path d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832L10 11.202V14a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4A1 1 0 0010 6v2.798L4.555 5.168z" />
@@ -173,19 +179,18 @@ export const MusicPlayer = () => {
         <div className="flex items-center space-x-3">
           <div className="w-12 h-12 bg-white/10 rounded-lg flex-shrink-0 overflow-hidden">
             <img 
-              src="/cover.png" 
-              alt="peach eyes Cover" 
+              src={currentSong.cover} 
+              alt={`${currentSong.title} Cover`} 
               className="w-full h-full object-cover"
               onError={(e) => {
-                
                 e.currentTarget.style.display = 'none';
               }}
             />
           </div>
           <div className="text-left flex-1 min-w-0 flex items-center space-x-2">
             <div className="flex-1 min-w-0">
-              <h3 className="text-white text-xs font-medium truncate">peach eyes</h3>
-              <p className="text-white/60 text-xs truncate">wave to earth</p>
+              <h3 className="text-white text-xs font-medium truncate">{currentSong.title}</h3>
+              <p className="text-white/60 text-xs truncate">{currentSong.artist}</p>
             </div>
             
             <div className="flex items-end space-x-0.5 h-4">
@@ -222,3 +227,4 @@ export const MusicPlayer = () => {
     </div>
   );
 };
+
