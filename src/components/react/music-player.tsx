@@ -1,48 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { SONGS } from "../../constant/songs";
-import { useOverlayReady } from "./use-overlay-ready";
-import {
-  getMusicState,
-  initMusicStore,
-  nextSong,
-  notifyOverlayUncovered,
-  prevSong,
-  seekTo,
-  subscribeMusicStore,
-  togglePlayPause,
-} from "./music-player-store";
 
-type MusicPlayerProps = {
-  showUI?: boolean;
-};
-
-export const MusicPlayer = ({ showUI = true }: MusicPlayerProps) => {
-  const [currentSongIndex, setCurrentSongIndex] = useState(getMusicState().currentSongIndex);
-  const [isPlaying, setIsPlaying] = useState(getMusicState().isPlaying);
-  const [currentTime, setCurrentTime] = useState(getMusicState().currentTime);
-  const [duration, setDuration] = useState(getMusicState().duration);
+export const MusicPlayer = () => {
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [waveHeights, setWaveHeights] = useState([20, 20, 20, 20]);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
   const waveIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const overlayReady = useOverlayReady();
 
   const currentSong = SONGS[currentSongIndex];
-
-  useEffect(() => {
-    initMusicStore();
-    return subscribeMusicStore((state) => {
-      setCurrentSongIndex(state.currentSongIndex);
-      setIsPlaying(state.isPlaying);
-      setCurrentTime(state.currentTime);
-      setDuration(state.duration);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (overlayReady) {
-      notifyOverlayUncovered();
-    }
-  }, [overlayReady]);
   
   useEffect(() => {
     if (isPlaying) {
@@ -69,15 +38,86 @@ export const MusicPlayer = ({ showUI = true }: MusicPlayerProps) => {
     };
   }, [isPlaying]);
 
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const updateTime = () => {
+      setCurrentTime(audio.currentTime);
+    };
+    
+    const updateDuration = () => {
+      if (audio.duration && !isNaN(audio.duration)) {
+        setDuration(audio.duration);
+      }
+    };
+    
+    const handleLoadedData = () => {
+      if (audio.duration && !isNaN(audio.duration)) {
+        setDuration(audio.duration);
+      }
+      if (isPlaying) {
+        audio.play().catch(err => console.warn("Auto-play failed:", err));
+      }
+    };
+    
+    const handleEnded = () => {
+      handleNext();
+    };
+
+    const handleError = () => {
+      console.warn('Audio failed to load:', audio.error);
+      setDuration(0);
+    };
+
+    audio.addEventListener('timeupdate', updateTime);
+    audio.addEventListener('loadedmetadata', updateDuration);
+    audio.addEventListener('loadeddata', handleLoadedData);
+    audio.addEventListener('canplay', updateDuration);
+    audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('error', handleError);
+
+    return () => {
+      audio.removeEventListener('timeupdate', updateTime);
+      audio.removeEventListener('loadedmetadata', updateDuration);
+      audio.removeEventListener('loadeddata', handleLoadedData);
+      audio.removeEventListener('canplay', updateDuration);
+      audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('error', handleError);
+    };
+  }, [currentSongIndex, isPlaying]);
+
+  const togglePlayPause = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  const handleNext = () => {
+    setCurrentSongIndex((prev) => (prev + 1) % SONGS.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentSongIndex((prev) => (prev - 1 + SONGS.length) % SONGS.length);
+  };
+
   const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!progressRef.current) return;
+    const audio = audioRef.current;
+    if (!audio || !progressRef.current) return;
 
     const rect = progressRef.current.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const width = rect.width;
     const newTime = (clickX / width) * duration;
     
-    seekTo(newTime);
+    audio.currentTime = newTime;
+    setCurrentTime(newTime);
   };
 
   const formatTime = (time: number) => {
@@ -88,15 +128,21 @@ export const MusicPlayer = ({ showUI = true }: MusicPlayerProps) => {
 
   const progressPercentage = duration > 0 ? Math.min((currentTime / duration) * 100, 100) : 0;
 
-  if (!showUI) return null;
-
   return (
     <div className="music-container bg-[#161711] rounded-xl p-3">
+      <audio
+        ref={audioRef}
+        key={currentSong.src}
+        src={currentSong.src}
+        preload="metadata"
+      />
+      
+
       <div className="music-controls space-y-3">
         
         <div className="flex items-center justify-end space-x-2">
           <button
-            onClick={prevSong}
+            onClick={handlePrev}
             className="text-white/60 hover:text-white/80 transition-colors duration-200"
           >
             <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
@@ -120,7 +166,7 @@ export const MusicPlayer = ({ showUI = true }: MusicPlayerProps) => {
           </button>
 
           <button
-            onClick={nextSong}
+            onClick={handleNext}
             className="text-white/60 hover:text-white/80 transition-colors duration-200"
           >
             <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">

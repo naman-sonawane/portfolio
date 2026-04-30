@@ -1,6 +1,5 @@
 ---
 import "../styles/global.css";
-import { ClientRouter } from "astro:transitions";
 import { Navbar } from "../components/react/navbar";
 import { Tagline } from "../components/react/tagline";
 import { About } from "../components/react/about";
@@ -25,15 +24,13 @@ import TransitionOverlay from "../components/react/transition-overlay";
     <link rel="preload" as="image" href="/work.svg">
     <link rel="preload" as="image" href="/top-right.svg">
     <meta name="generator" content={Astro.generator} />
-    <ClientRouter />
     <title>Naman Sonawane</title>
   </head>
 
   <body class="bg-[#3a4664] p-4 main-body h-screen flex flex-col gap-y-4">
 
     <div id="ns-ssr-overlay" class="ns-ssr-overlay">NS</div>
-    <TransitionOverlay transition:persist="ns-overlay" client:load />
-    <MusicPlayer transition:persist="ns-music" showUI={false} client:load />
+    <TransitionOverlay client:load />
     <Navbar client:load />
 
     <div id="desktop-layout" class="grid grid-cols-10 gap-4 h-[calc(100vh-70px-32px-4px)]">
