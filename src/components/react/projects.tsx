@@ -147,22 +147,22 @@ export const Projects = () => {
 
   return (
     <motion.div 
-      className="project-container h-[85%] bg-[#161711] rounded-xl p-4 relative overflow-hidden"
+      className="project-container h-full bg-[#161711] rounded-xl p-3 xl:p-4 flex flex-col overflow-hidden"
       initial={{ opacity: 0, y: 24 }}
       animate={overlayReady ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, ease: 'easeInOut' }}
     >
       
       <motion.div 
-        className="origin-top-left scale-[0.92] flex items-center justify-between"
+        className="flex items-center justify-between flex-shrink-0 mb-3"
       >
-        <span className="project-title text-2xl instrument lighter">
+        <span className="project-title text-xl xl:text-2xl instrument lighter">
           Projects
         </span>
       </motion.div>
 
       <motion.div
-        className="origin-top-left scale-[0.92] project-banner relative h-[45%] rounded-xl mt-6 cursor-pointer overflow-hidden transition-transform duration-200"
+        className="project-banner relative rounded-xl cursor-pointer overflow-hidden transition-transform duration-200 flex-shrink-0 min-h-[150px] h-[34%] xl:h-[40%]"
         key={selectedProject}
         onClick={handleBannerClick}
         onMouseEnter={handleMouseEnter}
@@ -179,18 +179,18 @@ export const Projects = () => {
         />
         
         <motion.div 
-          className="banner-content absolute inset-0 p-6 flex flex-col justify-end text-white z-10"
+          className="banner-content absolute inset-0 p-3 xl:p-5 flex flex-col justify-end text-white z-10"
         >
           <div className="mb-2">
             <motion.p 
               key={`desc-${selectedProject}`}
-              className="text-sm mb-2"
+              className="text-xs xl:text-sm leading-snug mb-2"
             >
               {projectData[selectedProject].description}
             </motion.p>
             <motion.div 
               key={`tools-${selectedProject}`}
-              className="text-xs font-medium tracking-wider opacity-80"
+              className="text-[10px] xl:text-xs font-medium tracking-wide opacity-80"
             >
               {projectData[selectedProject].tools}
             </motion.div>
@@ -198,17 +198,23 @@ export const Projects = () => {
         </motion.div>
       </motion.div>
 
-      <div className="absolute bottom-4 left-4 right-4 origin-bottom-left scale-[0.92]">
-        <div className="project-line h-[1px] mb-3 w-full bg-white/30"></div>
+      <div
+        className="mt-3 flex-1 min-h-0 overflow-y-auto pr-1"
+        style={{
+          scrollbarWidth: 'thin',
+          scrollbarColor: 'rgba(255, 255, 255, 0.4) transparent'
+        }}
+      >
+        <div className="project-line h-[1px] mb-2 w-full bg-white/30"></div>
 
         <motion.div 
-          className="project-text mb-3"
+          className="project-text mb-2"
           whileHover={{ x: 4 }}
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <motion.span
               onClick={() => handleChangeProject("helpidontknowhowtonetworkin")}
-              className={`cursor-pointer hover:text-white/70 transition-all duration-200 text-white text-sm ${
+              className={`cursor-pointer hover:text-white/70 transition-all duration-200 text-white text-xs xl:text-sm leading-snug ${
                 selectedProject === "helpidontknowhowtonetworkin" ? "font-semibold text-white" : "text-white/80"
               }`}
               whileHover={{ x: 2 }}
@@ -218,7 +224,7 @@ export const Projects = () => {
             </motion.span>
             {projectData["helpidontknowhowtonetworkin"].award && (
               <motion.div 
-                className="bg-none border-[1px] border-amber-400 text-amber-400 px-1.5 py-0.5 rounded-full text-[10px] font-medium"
+                className="bg-none border-[1px] border-amber-400 text-amber-400 px-1.5 py-0.5 rounded-full text-[9px] xl:text-[10px] font-medium"
                 whileHover={{ scale: 1.05 }}
               >
                 <span>{projectData["helpidontknowhowtonetworkin"].award.toUpperCase()}</span>
@@ -227,16 +233,16 @@ export const Projects = () => {
           </div>
         </motion.div>
 
-        <div className="project-line h-[1px] mb-3 w-full bg-white/30"></div>
+        <div className="project-line h-[1px] mb-2 w-full bg-white/30"></div>
 
         <motion.div 
-          className="project-text mb-3"
+          className="project-text mb-2"
           whileHover={{ x: 4 }}
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <motion.span
               onClick={() => handleChangeProject("instalearn")}
-              className={`cursor-pointer hover:text-white/70 transition-all duration-200 text-white text-sm ${
+              className={`cursor-pointer hover:text-white/70 transition-all duration-200 text-white text-xs xl:text-sm ${
                 selectedProject === "instalearn" ? "font-semibold text-white" : "text-white/80"
               }`}
               whileHover={{ x: 2 }}
@@ -246,7 +252,7 @@ export const Projects = () => {
             </motion.span>
             {projectData.instalearn.award && (
               <motion.div 
-                className="bg-none border-[1px] border-amber-400 text-amber-400 px-1.5 py-0.5 rounded-full text-[10px] font-medium"
+                className="bg-none border-[1px] border-amber-400 text-amber-400 px-1.5 py-0.5 rounded-full text-[9px] xl:text-[10px] font-medium"
                 whileHover={{ scale: 1.05 }}
               >
                 <span>{projectData.instalearn.award.toUpperCase()}</span>
@@ -255,16 +261,16 @@ export const Projects = () => {
           </div>
         </motion.div>
 
-        <div className="project-line h-[1px] mb-3 w-full bg-white/30"></div>
+        <div className="project-line h-[1px] mb-2 w-full bg-white/30"></div>
 
         <motion.div 
-          className="project-text mb-3"
+          className="project-text mb-2"
           whileHover={{ x: 4 }}
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <motion.span
               onClick={() => handleChangeProject("eve")}
-              className={`cursor-pointer hover:text-white/70 transition-all duration-200 text-white text-sm ${
+              className={`cursor-pointer hover:text-white/70 transition-all duration-200 text-white text-xs xl:text-sm ${
                 selectedProject === "eve" ? "font-semibold text-white" : "text-white/80"
               }`}
               whileHover={{ x: 2 }}
@@ -274,7 +280,7 @@ export const Projects = () => {
             </motion.span>
             {projectData.eve.award && (
               <motion.div 
-                className="bg-none border-[1px] border-amber-400 text-amber-400 px-1.5 py-0.5 rounded-full text-[10px] font-medium"
+                className="bg-none border-[1px] border-amber-400 text-amber-400 px-1.5 py-0.5 rounded-full text-[9px] xl:text-[10px] font-medium"
                 whileHover={{ scale: 1.05 }}
               >
                 <span>{projectData.eve.award.toUpperCase()}</span>
@@ -283,15 +289,15 @@ export const Projects = () => {
           </div>
         </motion.div>
 
-        <div className="project-line h-[1px] mb-3 w-full bg-white/30"></div>
+        <div className="project-line h-[1px] mb-2 w-full bg-white/30"></div>
 
         <motion.div 
-          className="project-text mb-3"
+          className="project-text mb-2"
           whileHover={{ x: 4 }}
         >
           <motion.span
             onClick={() => handleChangeProject("kinesis")}
-            className={`cursor-pointer hover:text-white/70 transition-all duration-200 text-white text-sm ${
+            className={`cursor-pointer hover:text-white/70 transition-all duration-200 text-white text-xs xl:text-sm ${
               selectedProject === "kinesis" ? "font-semibold text-white" : "text-white/80"
             }`}
             whileHover={{ x: 2 }}

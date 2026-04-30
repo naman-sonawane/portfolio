@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useOverlayReady } from "./use-overlay-ready";
 
@@ -62,13 +62,15 @@ export const About = () => {
   const [isMobile, setIsMobile] = useState(false);
   const overlayReady = useOverlayReady();
 
-  
-  if (typeof window !== 'undefined') {
-    const mobile = window.innerWidth < 768;
-    if (mobile !== isMobile) {
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
-    }
-  }
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleCertClick = (url: string) => {
     window.open(url, '_blank');
@@ -173,7 +175,7 @@ export const About = () => {
         className="absolute bottom-4 left-4 right-4"
       >
         <motion.div 
-          className="flex flex-wrap gap-2 justify-start"
+          className="grid grid-cols-4 lg:grid-cols-5 gap-2 justify-items-center"
           initial="hidden"
           animate={overlayReady ? "show" : "hidden"}
           variants={{ hidden: {}, show: { transition: { staggerChildren: 0.05 } } }}
@@ -181,7 +183,7 @@ export const About = () => {
           {certifications.map((cert, index) => (
             <motion.div
               key={index}
-              className="cert-icon flex items-center justify-center rounded-lg hover:bg-[#2a2a2a] transition-colors cursor-pointer p-1 relative"
+              className="cert-icon w-[52px] h-[52px] xl:w-[60px] xl:h-[60px] flex items-center justify-center rounded-lg hover:bg-[#2a2a2a] transition-colors cursor-pointer p-1 relative"
               onClick={() => handleCertClick(cert.url)}
               onMouseEnter={() => setHoveredCert(cert.name)}
               onMouseLeave={() => setHoveredCert(null)}
@@ -192,11 +194,11 @@ export const About = () => {
               <img
                 src={cert.image}
                 alt={cert.name}
-                className="w-18 h-18 object-contain"
+                className="w-full h-full object-contain"
                 loading="lazy"
                 decoding="async"
-                width={72}
-                height={72}
+                width={60}
+                height={60}
               />
               {hoveredCert === cert.name && (
                 <motion.div 

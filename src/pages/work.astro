@@ -1,11 +1,13 @@
 ---
 import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
 import { Navbar } from "../components/react/navbar";
 import { WorkExperience } from "../components/react/work-experience";
 import { ToolsSoftware } from "../components/react/tools-software";
 import { Socials } from "../components/react/socials";
 import { About } from "../components/react/about";
 import TransitionOverlay from "../components/react/transition-overlay";
+import { MusicPlayer } from "../components/react/music-player";
 
 ---
 
@@ -19,16 +21,18 @@ import TransitionOverlay from "../components/react/transition-overlay";
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="preload" as="image" href="/work.svg">
     <meta name="generator" content={Astro.generator} />
+    <ClientRouter />
     <title>Work - Naman Sonawane</title>
   </head>
 
-  <body class="bg-[#3a4664] p-4 main-body h-screen flex flex-col gap-y-4">
+  <body class="bg-[#3a4664] p-4 main-body min-h-screen flex flex-col gap-y-4">
 
     <div id="ns-ssr-overlay" class="ns-ssr-overlay">NS</div>
-    <TransitionOverlay client:load />
+    <TransitionOverlay transition:persist="ns-overlay" client:load />
+    <MusicPlayer transition:persist="ns-music" showUI={false} client:load />
     <Navbar client:load />
 
-    <div class="grid grid-cols-12 gap-4 h-[calc(100vh-70px-32px-4px)] min-h-0 overflow-hidden">
+    <div class="grid grid-cols-12 gap-4 min-h-0 flex-1 overflow-hidden">
       
       <div class="col-span-8 h-full min-h-0">
         <WorkExperience client:load />
@@ -82,7 +86,7 @@ import TransitionOverlay from "../components/react/transition-overlay";
 
       
       function handleMobileLayout() {
-        const isMobile = window.innerWidth < 768;
+        const isCompactLayout = window.innerWidth < 1280;
         const body = document.body;
         const mainGrid = document.querySelector('.grid');
         const mobileCerts = document.querySelector('.mobile-certs');
@@ -92,9 +96,9 @@ import TransitionOverlay from "../components/react/transition-overlay";
         const toolsWrapper = document.getElementById('tools-wrapper') as HTMLElement | null;
         const socialsWrapper = document.getElementById('socials-wrapper') as HTMLElement | null;
         
-        if (isMobile) {
+        if (isCompactLayout) {
           
-          body.className = 'bg-[#3a4664] p-3 main-body min-h-screen flex flex-col gap-y-6';
+          body.className = 'bg-[#3a4664] p-3 sm:p-4 main-body min-h-screen flex flex-col gap-y-6';
           if (mainGrid) {
             mainGrid.className = 'flex flex-col gap-y-6 min-h-0 overflow-y-auto flex-1';
             (mainGrid as HTMLElement).style.height = 'auto';
@@ -120,7 +124,6 @@ import TransitionOverlay from "../components/react/transition-overlay";
               }
               
               if (socialsWrapper && mobileCerts && socialsWrapper.previousElementSibling !== mobileCerts) {
-                rightColumn.insertBefore(socialsWrapper, workContainer); 
                 rightColumn.insertBefore(socialsWrapper, workContainer); 
               }
               
@@ -154,9 +157,9 @@ import TransitionOverlay from "../components/react/transition-overlay";
           }
         } else {
           
-          body.className = 'bg-[#3a4664] p-4 main-body h-screen flex flex-col gap-y-4';
+          body.className = 'bg-[#3a4664] p-4 main-body min-h-screen flex flex-col gap-y-4';
           if (mainGrid) {
-            mainGrid.className = 'grid grid-cols-12 gap-4 h-[calc(100vh-70px-32px-4px)] min-h-0 overflow-hidden';
+            mainGrid.className = 'grid grid-cols-12 gap-4 min-h-0 flex-1 overflow-hidden';
             (mainGrid as HTMLElement).style.height = '';
             
             if (rightColumn && workContainer && gridContainer) {
