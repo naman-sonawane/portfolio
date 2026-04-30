@@ -7,16 +7,10 @@ export interface Song {
 
 export const SONGS: Song[] = [
   {
-    title: "Moonlight",
-    artist: "Chase Atlantic",
-    src: "/songs/moonlight.mp3",
-    cover: "/covers/moonlight.jpg",
-  },
-  {
-    title: "Perfect",
-    artist: "One Direction",
-    src: "/songs/perfect.mp3",
-    cover: "/covers/perfect.jpg",
+    title: "peach eyes",
+    artist: "wave to earth",
+    src: "/songs/peacheyes.mp3",
+    cover: "/covers/peacheyes.png",
   },
   {
     title: "BUTTERFLIES",
@@ -31,10 +25,10 @@ export const SONGS: Song[] = [
     cover: "/covers/talk.jpg",
   },
   {
-    title: "peach eyes",
-    artist: "wave to earth",
-    src: "/songs/peacheyes.mp3",
-    cover: "/covers/peacheyes.png",
+    title: "Perfect",
+    artist: "One Direction",
+    src: "/songs/perfect.mp3",
+    cover: "/covers/perfect.jpg",
   },
   {
     title: "endlessly",
@@ -47,5 +41,11 @@ export const SONGS: Song[] = [
     artist: "The Weeknd",
     src: "/songs/outoftime.mp3",
     cover: "/covers/outoftime.jpg",
+  },
+  {
+    title: "Moonlight",
+    artist: "Chase Atlantic",
+    src: "/songs/moonlight.mp3",
+    cover: "/covers/moonlight.jpg",
   },
 ];
