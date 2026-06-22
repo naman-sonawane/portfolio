@@ -254,7 +254,10 @@ function FallingBall({
     // Shared, pointer-driven state so the apple can be grabbed mid-roll. While
     // held it follows the pointer and stops rolling; on release it keeps the
     // flick velocity, so you can throw it off-screen.
-    const drag = { active: false, x: 0, y: 0, vx: 0, vy: 0, claim: false };
+    // `everGrabbed` latches once the user first touches the apple: after that
+    // the scripted intro "liveliness" (forced rightward roll / minimum hops)
+    // is switched off so it doesn't spontaneously start rolling again.
+    const drag = { active: false, x: 0, y: 0, vx: 0, vy: 0, claim: false, everGrabbed: false };
     let dragCleanup = () => {};
 
     const attachDrag = (ball: HTMLDivElement) => {
@@ -271,6 +274,7 @@ function FallingBall({
         e.preventDefault();
         drag.active = true;
         drag.claim = false;
+        drag.everGrabbed = true; // hand control to the user from here on
         try { ball.setPointerCapture(e.pointerId); } catch {}
         grabDX = e.clientX - drag.x; // grab offset from the apple's centre
         grabDY = e.clientY - drag.y;
@@ -588,17 +592,17 @@ function FallingBall({
               vx = (vx - vnx) * FRICTION - vnx * REST_LETTER;
               vy = (vy - vny) * FRICTION - vny * REST_LETTER;
             }
-            // Guarantee a lively hop off any upward-facing glyph face, so the
-            // ball bounces just as energetically on Sonawane as on Naman even
-            // after it's shed speed crossing the first word.
-            if (ny < -0.35 && vy > -MIN_BOUNCE) vy = -MIN_BOUNCE;
-            if (!pushed) {
-              vx += ROLL_VX; // first glyph contact sends it travelling right
-              pushed = true;
+            // Intro-only liveliness (off once the user has grabbed it):
+            // guarantee a hop off upward-facing glyphs and keep it rolling
+            // rightward out of the valleys between letters.
+            if (!drag.everGrabbed) {
+              if (ny < -0.35 && vy > -MIN_BOUNCE) vy = -MIN_BOUNCE;
+              if (!pushed) {
+                vx += ROLL_VX; // first glyph contact sends it travelling right
+                pushed = true;
+              }
+              if (vx < MIN_VX) vx = MIN_VX;
             }
-            // Never let a valley stall it — keep a rightward floor while in
-            // contact so it always climbs out toward the right.
-            if (vx < MIN_VX) vx = MIN_VX;
             // Pop the ball out of the glyph along the contact normal.
             let guard = 0;
             while (solidAt(x, y + 0) && guard < 12) {
@@ -614,8 +618,13 @@ function FallingBall({
           if (y + R >= floorY) {
             y = floorY - R;
             if (Math.abs(vy) < 105) {
-              vy = 0; // too slow to bounce — settle and roll
-              if (vx < ROLL_VX) vx = ROLL_VX;
+              vy = 0; // too slow to bounce — settle
+              if (!drag.everGrabbed) {
+                if (vx < ROLL_VX) vx = ROLL_VX; // intro: roll off to the right
+              } else {
+                vx *= 0.9; // user-controlled: roll to a natural stop
+                if (Math.abs(vx) < 4) vx = 0;
+              }
             } else {
               vy = -vy * REST_FLOOR;
             }
