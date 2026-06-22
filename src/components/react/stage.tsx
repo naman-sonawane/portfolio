@@ -250,6 +250,84 @@ function FallingBall({
     let cancelled = false;
     let delay = 0;
 
+    // ── Drag-to-throw ─────────────────────────────────────────────────────
+    // Shared, pointer-driven state so the apple can be grabbed mid-roll. While
+    // held it follows the pointer and stops rolling; on release it keeps the
+    // flick velocity, so you can throw it off-screen.
+    const drag = { active: false, x: 0, y: 0, vx: 0, vy: 0, claim: false };
+    let dragCleanup = () => {};
+
+    const attachDrag = (ball: HTMLDivElement) => {
+      let grabDX = 0;
+      let grabDY = 0;
+      let lastX = 0;
+      let lastY = 0;
+      let lastT = 0;
+      let vX = 0; // tracked flick velocity, px/s
+      let vY = 0;
+      const clamp = (v: number) => Math.max(-4200, Math.min(4200, v));
+
+      const down = (e: PointerEvent) => {
+        e.preventDefault();
+        drag.active = true;
+        drag.claim = false;
+        try { ball.setPointerCapture(e.pointerId); } catch {}
+        grabDX = e.clientX - drag.x; // grab offset from the apple's centre
+        grabDY = e.clientY - drag.y;
+        lastX = e.clientX;
+        lastY = e.clientY;
+        lastT = performance.now();
+        vX = 0;
+        vY = 0;
+        ball.style.cursor = "grabbing";
+      };
+      const move = (e: PointerEvent) => {
+        if (!drag.active) return;
+        e.preventDefault();
+        const now = performance.now();
+        const dt = (now - lastT) / 1000;
+        if (dt > 0) {
+          // Light smoothing so a single jittery sample can't spike the throw.
+          vX = 0.6 * vX + 0.4 * ((e.clientX - lastX) / dt);
+          vY = 0.6 * vY + 0.4 * ((e.clientY - lastY) / dt);
+        }
+        lastX = e.clientX;
+        lastY = e.clientY;
+        lastT = now;
+        drag.x = e.clientX - grabDX;
+        drag.y = e.clientY - grabDY;
+      };
+      const up = (e: PointerEvent) => {
+        if (!drag.active) return;
+        drag.active = false;
+        // Released after a pause → set it down gently; mid-flick → throw it.
+        const idle = (performance.now() - lastT) / 1000;
+        const k = idle > 0.06 ? 0 : 1;
+        drag.vx = clamp(vX * k);
+        drag.vy = clamp(vY * k);
+        drag.claim = true; // the sim picks this velocity up on its next frame
+        try { ball.releasePointerCapture(e.pointerId); } catch {}
+        ball.style.cursor = "grab";
+      };
+
+      ball.addEventListener("pointerdown", down);
+      window.addEventListener("pointermove", move);
+      window.addEventListener("pointerup", up);
+      window.addEventListener("pointercancel", up);
+      dragCleanup = () => {
+        ball.removeEventListener("pointerdown", down);
+        window.removeEventListener("pointermove", move);
+        window.removeEventListener("pointerup", up);
+        window.removeEventListener("pointercancel", up);
+      };
+    };
+
+    // Off-screen on any side (but not the top — a ball thrown up falls back).
+    const offScreen = (x: number, y: number, R: number) =>
+      x < -R - 60 ||
+      x > window.innerWidth + R + 60 ||
+      y > window.innerHeight + R + 60;
+
     // ── Mobile : the right edge is the ground ─────────────────────────────
     // Gravity points right, the apple drops in from the top, bounces a bit off
     // the right edge, then rolls down it and off the bottom.
@@ -258,7 +336,6 @@ function FallingBall({
       const G = 950; // gravity, now pulling toward the right edge
       const REST_WALL = 0.5; // bounciness off the right edge ("ground")
       const W = window.innerWidth;
-      const H = window.innerHeight;
       const wallX = W - R;
 
       let x = W * 0.5; // start mid-width...
@@ -266,6 +343,8 @@ function FallingBall({
       let vx = 70; // drifting toward the right wall
       let vy = 140; // and steadily downward — the "rolls downwards" motion
       let rot = 0;
+      drag.x = x;
+      drag.y = y;
 
       ball.style.opacity = "1";
       let last = performance.now();
@@ -274,6 +353,22 @@ function FallingBall({
         let dt = (now - last) / 1000;
         last = now;
         if (dt > 0.026) dt = 0.026;
+
+        if (drag.active) {
+          // Held: follow the pointer, no rolling.
+          x = drag.x;
+          y = drag.y;
+          vx = 0;
+          vy = 0;
+          ball.style.transform = `translate(${x - R}px, ${y - R}px) rotate(${rot}rad)`;
+          raf = requestAnimationFrame(step);
+          return;
+        }
+        if (drag.claim) {
+          vx = drag.vx; // just released — fly off with the throw velocity
+          vy = drag.vy;
+          drag.claim = false;
+        }
 
         const SUB = 6;
         const h = dt / SUB;
@@ -289,11 +384,14 @@ function FallingBall({
           rot -= (vy * h) / R; // spin tracks the downward roll
         }
 
+        drag.x = x;
+        drag.y = y;
         ball.style.transform = `translate(${x - R}px, ${y - R}px) rotate(${rot}rad)`;
 
-        if (y - R > H + 4) {
+        if (offScreen(x, y, R)) {
           ball.style.opacity = "0";
-          return; // rolled off the bottom — stop
+          ball.style.pointerEvents = "none";
+          return; // gone — stop
         }
         raf = requestAnimationFrame(step);
       };
@@ -307,6 +405,8 @@ function FallingBall({
       if (!ball) return;
       // Skip the gag for users who prefer reduced motion.
       if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+
+      attachDrag(ball); // make it grabbable / throwable in either mode
 
       // Mobile (single-column layout): roll down the right edge instead.
       if (window.matchMedia("(max-width: 1023px)").matches) {
@@ -421,6 +521,8 @@ function FallingBall({
       let vy = 0;
       let rot = 0;
       let pushed = false;
+      drag.x = x;
+      drag.y = y;
 
       ball.style.opacity = "1";
       let last = performance.now();
@@ -429,6 +531,22 @@ function FallingBall({
         let dt = (now - last) / 1000;
         last = now;
         if (dt > 0.026) dt = 0.026; // clamp to limit tunnelling on lag spikes
+
+        if (drag.active) {
+          // Held: follow the pointer, no rolling.
+          x = drag.x;
+          y = drag.y;
+          vx = 0;
+          vy = 0;
+          ball.style.transform = `translate(${x - R}px, ${y - R}px) rotate(${rot}rad)`;
+          raf = requestAnimationFrame(step);
+          return;
+        }
+        if (drag.claim) {
+          vx = drag.vx; // just released — fly off with the throw velocity
+          vy = drag.vy;
+          drag.claim = false;
+        }
 
         // Integrate in small substeps so a fast ball can't skip through a
         // thin glyph stroke between frames.
@@ -506,11 +624,14 @@ function FallingBall({
           rot += (vx * h) / R; // spin tracks horizontal travel
         }
 
+        drag.x = x;
+        drag.y = y;
         ball.style.transform = `translate(${x - R}px, ${y - R}px) rotate(${rot}rad)`;
 
-        if (x - R > window.innerWidth + 4) {
+        if (offScreen(x, y, R)) {
           ball.style.opacity = "0";
-          return; // rolled off-screen — stop
+          ball.style.pointerEvents = "none";
+          return; // gone — stop
         }
         raf = requestAnimationFrame(step);
       };
@@ -528,6 +649,7 @@ function FallingBall({
       cancelled = true;
       clearTimeout(delay);
       cancelAnimationFrame(raf);
+      dragCleanup();
     };
   }, [ready, titleRef, lettersRef]);
 
@@ -535,14 +657,29 @@ function FallingBall({
     <div
       ref={ballRef}
       aria-hidden="true"
-      className="pointer-events-none fixed left-0 top-0 z-50"
-      style={{ width: 54, height: 54, opacity: 0, willChange: "transform" }}
+      className="fixed left-0 top-0 z-50"
+      style={{
+        width: 54,
+        height: 54,
+        opacity: 0,
+        willChange: "transform",
+        cursor: "grab",
+        touchAction: "none", // let us drag without the page scrolling
+        userSelect: "none",
+        WebkitUserSelect: "none",
+      }}
     >
       <img
         src="/apple.png"
         alt=""
         draggable={false}
-        style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "contain",
+          display: "block",
+          pointerEvents: "none", // events land on the wrapper, not the image
+        }}
       />
     </div>
   );
