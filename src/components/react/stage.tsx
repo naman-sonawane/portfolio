@@ -22,7 +22,7 @@ type Item = {
 const experience: Item[] = [
   {
     id: "cohere", kind: "exp", label: "Cohere", brand: "#ff7759",
-    meta: "AI / NLP Code Evaluation", sub: "AI / NLP code evaluation at Cohere",
+    meta: "Data Specialist, SE", sub: "Data Specialist for software engineering at Cohere",
     line: "Optimizing enterprise ML models through large-scale data validation.",
     img: "/logos/cohere.png", link: "https://cohere.com/blog/north-mini-code",
   },
@@ -90,6 +90,12 @@ export const Stage = () => {
   const [preview, setPreview] = useState<Item | null>(null);
   const active = pinned ?? preview;
 
+  // Refs the falling-ball physics reads. Every letter is its own span so the
+  // ball can collide with each glyph's true shape; index 1 (the "a" in Naman)
+  // fixes the drop point.
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const lettersRef = useRef<(HTMLSpanElement | null)[]>([]);
+
   // Click an item to pin it; click it again to unpin.
   const selectItem = (it: Item | null) =>
     setPinned((prev) => (it && prev?.id === it.id ? null : it));
@@ -112,12 +118,24 @@ export const Stage = () => {
       {/* ── LEFT : identity ── */}
       <div className="flex min-w-0 flex-col justify-center">
         <motion.h1
+          ref={titleRef}
           className="serif ink leading-[0.82] tracking-[-0.015em] text-[clamp(3.2rem,9vw,8rem)]"
           {...rise(0)}
         >
-          <span className="block">Naman</span>
           <span className="block">
-            Sonawane<Star />
+            {"Naman".split("").map((ch, i) => (
+              <span key={`n${i}`} ref={(el) => { lettersRef.current[i] = el; }}>
+                {ch}
+              </span>
+            ))}
+          </span>
+          <span className="block">
+            {"Sonawane".split("").map((ch, i) => (
+              <span key={`s${i}`} ref={(el) => { lettersRef.current[5 + i] = el; }}>
+                {ch}
+              </span>
+            ))}
+            <Star />
           </span>
         </motion.h1>
 
@@ -199,9 +217,336 @@ export const Stage = () => {
           </div>
         </motion.div>
       </div>
+
+      <FallingBall titleRef={titleRef} lettersRef={lettersRef} ready={overlayReady} />
     </section>
   );
 };
+
+/* ── FallingBall : a red ball dropped above the "a" in Naman. Gravity pulls it
+   down; it collides with the *exact shape* of every individual letter in
+   "Naman" and "Sonawane" (a per-pixel alpha mask of the rendered glyphs), then
+   drops to the bottom edge of the screen, bounces a few diminishing times, and
+   spins/rolls off to the right. Runs once, the moment the page loads. ── */
+function FallingBall({
+  titleRef,
+  lettersRef,
+  ready,
+}: {
+  titleRef: React.RefObject<HTMLHeadingElement | null>;
+  lettersRef: React.RefObject<(HTMLSpanElement | null)[]>;
+  ready: boolean;
+}) {
+  const ballRef = useRef<HTMLDivElement>(null);
+  const ranRef = useRef(false);
+
+  useEffect(() => {
+    // Hold until the preloader is gone (and a beat after) so the drop isn't
+    // already half over by the time the page is revealed. Runs only once.
+    if (!ready || ranRef.current) return;
+    ranRef.current = true;
+
+    let raf = 0;
+    let cancelled = false;
+    let delay = 0;
+
+    // ── Mobile : the right edge is the ground ─────────────────────────────
+    // Gravity points right, the apple drops in from the top, bounces a bit off
+    // the right edge, then rolls down it and off the bottom.
+    const runRightEdge = (ball: HTMLDivElement) => {
+      const R = 27;
+      const G = 950; // gravity, now pulling toward the right edge
+      const REST_WALL = 0.5; // bounciness off the right edge ("ground")
+      const W = window.innerWidth;
+      const H = window.innerHeight;
+      const wallX = W - R;
+
+      let x = W * 0.5; // start mid-width...
+      let y = -R; // ...just above the top edge
+      let vx = 70; // drifting toward the right wall
+      let vy = 140; // and steadily downward — the "rolls downwards" motion
+      let rot = 0;
+
+      ball.style.opacity = "1";
+      let last = performance.now();
+
+      const step = (now: number) => {
+        let dt = (now - last) / 1000;
+        last = now;
+        if (dt > 0.026) dt = 0.026;
+
+        const SUB = 6;
+        const h = dt / SUB;
+        for (let s = 0; s < SUB; s++) {
+          vx += G * h;
+          x += vx * h;
+          y += vy * h;
+          if (x >= wallX) {
+            x = wallX;
+            if (vx > 0) vx = -vx * REST_WALL; // bounce back off the edge
+            if (Math.abs(vx) < 55) vx = 0; // settled — pin against the wall
+          }
+          rot -= (vy * h) / R; // spin tracks the downward roll
+        }
+
+        ball.style.transform = `translate(${x - R}px, ${y - R}px) rotate(${rot}rad)`;
+
+        if (y - R > H + 4) {
+          ball.style.opacity = "0";
+          return; // rolled off the bottom — stop
+        }
+        raf = requestAnimationFrame(step);
+      };
+
+      raf = requestAnimationFrame(step);
+    };
+
+    const start = () => {
+      if (cancelled) return;
+      const ball = ballRef.current;
+      if (!ball) return;
+      // Skip the gag for users who prefer reduced motion.
+      if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+
+      // Mobile (single-column layout): roll down the right edge instead.
+      if (window.matchMedia("(max-width: 1023px)").matches) {
+        runRightEdge(ball);
+        return;
+      }
+
+      const title = titleRef.current;
+      const letters = (lettersRef.current ?? []).filter(
+        (el): el is HTMLSpanElement => !!el,
+      );
+      if (!title || letters.length === 0) return;
+
+      const R = 27; // ball radius (matches the rendered apple size below)
+      const G = 950; // gravity, px/s²
+      const REST_LETTER = 0.62; // bounciness off a glyph (higher = taller hops)
+      const REST_FLOOR = 0.55; // bounciness off the bottom edge
+      const FRICTION = 0.98; // tangential damping at each glyph contact
+      const ROLL_VX = 115; // rightward shove on first glyph contact
+      const MIN_VX = 90; // rightward floor while touching glyphs — escapes gaps
+      const MIN_BOUNCE = 235; // min upward hop off any glyph — keeps every
+      //                         letter (Naman *and* Sonawane) equally springy
+      const ALPHA = 18; // mask threshold (0–255) — low, to catch soft edges
+      const GROW = 5; // px the hitbox is grown around each glyph
+
+      // ── Build a per-pixel mask of the glyph shapes ────────────────────
+      // Each letter is drawn into an offscreen canvas with the same font and
+      // at the same screen position it occupies in the DOM, so the mask is
+      // the literal outline of every letter. `cap*` records the title's
+      // position at capture time; if it shifts (intro rise, reflow) we slide
+      // the mask by the live delta instead of re-rendering.
+      const rects = letters.map((el) => el.getBoundingClientRect());
+      const titleRect = title.getBoundingClientRect();
+      const pad = 24;
+      const ox = Math.floor(Math.min(...rects.map((r) => r.left)) - pad);
+      const oy = Math.floor(titleRect.top - pad);
+      const W = Math.ceil(Math.max(...rects.map((r) => r.right)) + pad) - ox;
+      const H = Math.ceil(titleRect.bottom + pad) - oy;
+      if (W <= 0 || H <= 0) return;
+
+      const canvas = document.createElement("canvas");
+      canvas.width = W;
+      canvas.height = H;
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      if (!ctx) return;
+      ctx.fillStyle = "#fff";
+      ctx.textBaseline = "alphabetic";
+      ctx.textAlign = "left";
+
+      letters.forEach((el, i) => {
+        const r = rects[i];
+        const ch = el.textContent ?? "";
+        if (!ch) return;
+        const cs = getComputedStyle(el);
+        const F = parseFloat(cs.fontSize) || r.height;
+        ctx.font = `${cs.fontStyle} ${cs.fontWeight} ${F}px ${cs.fontFamily}`;
+        const m = ctx.measureText(ch);
+        const ascent = m.fontBoundingBoxAscent || 0.8 * F;
+        // Baseline within the line box: half-leading + font ascent.
+        const baselineY = r.top + (r.height - F) / 2 + ascent;
+        ctx.fillText(ch, r.left - ox, baselineY - oy);
+      });
+
+      const pixels = ctx.getImageData(0, 0, W, H).data;
+      const raw = new Uint8Array(W * H);
+      for (let i = 0; i < W * H; i++) raw[i] = pixels[i * 4 + 3] > ALPHA ? 1 : 0;
+
+      // Dilate the mask by GROW px (separable max-filter) so the hitbox is a
+      // little fatter than the glyph — forgiving against fast motion and any
+      // sub-pixel misalignment, so the ball can't slip through a thin stroke.
+      const tmp = new Uint8Array(W * H);
+      for (let y = 0; y < H; y++) {
+        for (let x = 0; x < W; x++) {
+          let on = 0;
+          for (let k = -GROW; k <= GROW && !on; k++) {
+            const xx = x + k;
+            if (xx >= 0 && xx < W && raw[y * W + xx]) on = 1;
+          }
+          tmp[y * W + x] = on;
+        }
+      }
+      const mask = new Uint8Array(W * H);
+      for (let y = 0; y < H; y++) {
+        for (let x = 0; x < W; x++) {
+          let on = 0;
+          for (let k = -GROW; k <= GROW && !on; k++) {
+            const yy = y + k;
+            if (yy >= 0 && yy < H && tmp[yy * W + x]) on = 1;
+          }
+          mask[y * W + x] = on;
+        }
+      }
+
+      const capLeft = titleRect.left;
+      const capTop = titleRect.top;
+
+      // Sample the mask in screen coords, following the title if it moved.
+      let dx = 0;
+      let dy = 0;
+      const solidAt = (wx: number, wy: number) => {
+        const lx = Math.round(wx - dx - ox);
+        const ly = Math.round(wy - dy - oy);
+        if (lx < 0 || ly < 0 || lx >= W || ly >= H) return false;
+        return mask[ly * W + lx] === 1;
+      };
+
+      // ── Initial state : drop centred over the "a" in Naman ────────────
+      const dropRect = rects[1] ?? rects[0];
+      let x = dropRect.left + dropRect.width / 2 - 16; // a touch left of the "a"
+      let y = -R;
+      let vx = 45; // a little rightward momentum from the very start
+      let vy = 0;
+      let rot = 0;
+      let pushed = false;
+
+      ball.style.opacity = "1";
+      let last = performance.now();
+
+      const step = (now: number) => {
+        let dt = (now - last) / 1000;
+        last = now;
+        if (dt > 0.026) dt = 0.026; // clamp to limit tunnelling on lag spikes
+
+        // Integrate in small substeps so a fast ball can't skip through a
+        // thin glyph stroke between frames.
+        const SUB = 8;
+        const h = dt / SUB;
+        const live = title.getBoundingClientRect();
+        dx = live.left - capLeft;
+        dy = live.top - capTop;
+        const floorY = window.innerHeight - R;
+
+        for (let s = 0; s < SUB; s++) {
+          vy += G * h;
+          x += vx * h;
+          y += vy * h;
+
+          // Per-glyph collision: probe points around the ball's rim; any that
+          // land on a solid pixel push outward, and their average is the
+          // contact normal we bounce off.
+          let nx = 0;
+          let ny = 0;
+          let hits = 0;
+          const N = 20;
+          for (let i = 0; i < N; i++) {
+            const ang = (i / N) * Math.PI * 2;
+            if (solidAt(x + Math.cos(ang) * R, y + Math.sin(ang) * R)) {
+              nx += -Math.cos(ang);
+              ny += -Math.sin(ang);
+              hits++;
+            }
+          }
+          if (hits) {
+            const len = Math.hypot(nx, ny) || 1;
+            nx /= len;
+            ny /= len;
+            const vdot = vx * nx + vy * ny;
+            if (vdot < 0) {
+              const vnx = vdot * nx;
+              const vny = vdot * ny;
+              vx = (vx - vnx) * FRICTION - vnx * REST_LETTER;
+              vy = (vy - vny) * FRICTION - vny * REST_LETTER;
+            }
+            // Guarantee a lively hop off any upward-facing glyph face, so the
+            // ball bounces just as energetically on Sonawane as on Naman even
+            // after it's shed speed crossing the first word.
+            if (ny < -0.35 && vy > -MIN_BOUNCE) vy = -MIN_BOUNCE;
+            if (!pushed) {
+              vx += ROLL_VX; // first glyph contact sends it travelling right
+              pushed = true;
+            }
+            // Never let a valley stall it — keep a rightward floor while in
+            // contact so it always climbs out toward the right.
+            if (vx < MIN_VX) vx = MIN_VX;
+            // Pop the ball out of the glyph along the contact normal.
+            let guard = 0;
+            while (solidAt(x, y + 0) && guard < 12) {
+              x += nx * 1.5;
+              y += ny * 1.5;
+              guard++;
+            }
+            x += nx * 1.5;
+            y += ny * 1.5;
+          }
+
+          // Bottom edge of the screen.
+          if (y + R >= floorY) {
+            y = floorY - R;
+            if (Math.abs(vy) < 105) {
+              vy = 0; // too slow to bounce — settle and roll
+              if (vx < ROLL_VX) vx = ROLL_VX;
+            } else {
+              vy = -vy * REST_FLOOR;
+            }
+          }
+
+          rot += (vx * h) / R; // spin tracks horizontal travel
+        }
+
+        ball.style.transform = `translate(${x - R}px, ${y - R}px) rotate(${rot}rad)`;
+
+        if (x - R > window.innerWidth + 4) {
+          ball.style.opacity = "0";
+          return; // rolled off-screen — stop
+        }
+        raf = requestAnimationFrame(step);
+      };
+
+      raf = requestAnimationFrame(step);
+    };
+
+    // Wait for the web font (so the mask matches the rendered glyphs), then a
+    // short beat after the preloader clears, then drop.
+    (document.fonts?.ready ?? Promise.resolve()).then(() => {
+      if (cancelled) return;
+      delay = window.setTimeout(start, 650);
+    });
+    return () => {
+      cancelled = true;
+      clearTimeout(delay);
+      cancelAnimationFrame(raf);
+    };
+  }, [ready, titleRef, lettersRef]);
+
+  return (
+    <div
+      ref={ballRef}
+      aria-hidden="true"
+      className="pointer-events-none fixed left-0 top-0 z-50"
+      style={{ width: 54, height: 54, opacity: 0, willChange: "transform" }}
+    >
+      <img
+        src="/apple.png"
+        alt=""
+        draggable={false}
+        style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+      />
+    </div>
+  );
+}
 
 /* ── Socials : 4×1 row beneath the tagline ── */
 function Socials() {
@@ -343,14 +688,14 @@ function getStarFill(clicks: number): StarFill {
   if (clicks >= 1000) return { type: "gradient", value: "starGradWhiteGray" };
   if (clicks >= 850) return { type: "gradient", value: "starGradRainbow" };
   if (clicks >= 600) return { type: "gradient", value: "starGradGold" };
-  if (clicks >= 450) return { type: "gradient", value: "starGradBluePurple" };
-  if (clicks >= 300) return { type: "gradient", value: "starGradGreenYellow" };
-  if (clicks >= 150) return { type: "gradient", value: "starGradRedPink" };
+  if (clicks >= 450) return { type: "gradient", value: "starGradThemeSlate" };
+  if (clicks >= 300) return { type: "gradient", value: "starGradThemeOlive" };
+  if (clicks >= 150) return { type: "gradient", value: "starGradThemeSand" };
   if (clicks >= 25) return { type: "solid", value: "#f59e0b" };
-  if (clicks >= 10) return { type: "gradient", value: "starGradThemeSlate" };
-  if (clicks >= 5) return { type: "gradient", value: "starGradThemeOlive" };
-  if (clicks >= 1) return { type: "gradient", value: "starGradThemeSand" };
-  return { type: "solid", value: "var(--faint)" };
+  if (clicks >= 10) return { type: "gradient", value: "starGradBluePurple" };
+  if (clicks >= 5) return { type: "gradient", value: "starGradGreenYellow" };
+  if (clicks >= 1) return { type: "gradient", value: "starGradRedPink" };
+  return { type: "solid", value: "var(#000)" };
 }
 
 function Star() {
