@@ -100,6 +100,16 @@ export const Stage = () => {
   const selectItem = (it: Item | null) =>
     setPinned((prev) => (it && prev?.id === it.id ? null : it));
 
+  // On mobile there's no hover, so a tap on a project/cert opens its link
+  // directly instead of pinning the tagline.
+  const openOrSelect = (it: Item | null) => {
+    if (it && window.matchMedia("(max-width: 1023px)").matches) {
+      window.open(it.link, "_blank", "noreferrer");
+      return;
+    }
+    selectItem(it);
+  };
+
   const rise = (delay: number) => ({
     initial: { opacity: 0, y: 18 },
     animate: overlayReady ? { opacity: 1, y: 0 } : {},
@@ -189,7 +199,7 @@ export const Stage = () => {
           <p className="eyebrow mb-3.5">Projects</p>
           <div className="flex flex-col gap-2.5">
             {projects.map((it) => (
-              <ProjectRow key={it.id} item={it} active={active} onHover={setPreview} onSelect={selectItem} />
+              <ProjectRow key={it.id} item={it} active={active} onHover={setPreview} onSelect={openOrSelect} />
             ))}
           </div>
         </motion.div>
@@ -208,7 +218,7 @@ export const Stage = () => {
                   style={{ opacity: dim ? 0.35 : 1 }}
                   onMouseEnter={() => setPreview(it)}
                   onMouseLeave={() => setPreview(null)}
-                  onClick={(e) => { e.stopPropagation(); selectItem(it); }}
+                  onClick={(e) => { e.stopPropagation(); openOrSelect(it); }}
                 >
                   <img src={it.img} alt={it.sub} loading="lazy" className="h-9 w-9 object-contain" />
                 </button>
