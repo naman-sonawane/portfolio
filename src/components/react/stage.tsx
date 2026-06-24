@@ -14,6 +14,7 @@ type Item = {
   sub: string; // phrase shown under the name on hover
   line?: string; // one-liner in the row (experience only)
   meta?: string; // role / award shown inline
+  event?: string; // hackathon name shown after the meta (projects only)
   img: string;
   link: string;
   brand?: string; // brand hex for experience underline
@@ -22,41 +23,41 @@ type Item = {
 const experience: Item[] = [
   {
     id: "cohere", kind: "exp", label: "Cohere", brand: "#ff7759",
-    meta: "Data Specialist, SE", sub: "Data Specialist for software engineering at Cohere",
-    line: "Optimizing enterprise ML models through large-scale data validation.",
+    meta: "Data Specialist, SE", sub: "Shaped Cohere’s first open-source coding model, North Mini Code.",
+    line: "Developing enterprise-tier models for software engineering via scaled dataset validation, RLHF, and evaluation frameworks.",
     img: "/logos/cohere.png", link: "https://cohere.com/blog/north-mini-code",
   },
   {
     id: "mit", kind: "exp", label: "Mantis AI @MIT CSAIL", brand: "#ba3d49",
-    meta: "ML Research Assistant", sub: "ML research at MIT CSAIL",
-    line: "LLM solutions via MCP integrations for the Mantis project.",
-    img: "/logos/mit.png", link: "https://github.com/KellisLab",
+    meta: "ML Research Assistant", sub: "Implemented MCP agents panel for multimodal data exploration.",
+    line: "Integrated MCP within Mantis AI, a “cognitive cartography” platform mapping multimodal data into interactive latent spaces.",
+    img: "/logos/mit.png", link: "https://mantis.csail.mit.edu/home/",
   },
   {
     id: "hackcanada", kind: "exp", label: "Hack Canada", brand: "#b38168",
-    meta: "UI / UX Designer", sub: "UI / UX design at Hack Canada",
-    line: "Designed the experience behind 1,200+ applications and 20+ sponsors.",
+    meta: "UI / UX Designer", sub: "Built Figma prototypes for the landing page, application, and backend.",
+    line: "Designed the hackathon experience in Waterloo for 800+ participants, 210+ projects, and 18 sponsors.",
     img: "/logos/hackcanada.png", link: "https://hackcanada.org",
   },
   {
     id: "codeninjas", kind: "exp", label: "Code Ninjas", brand: "#7a7a7a",
-    meta: "Programming Instructor", sub: "Programming instructor at Code Ninjas",
-    line: "Built interactive programming modules and curriculum for students.",
+    meta: "Programming Instructor", sub: "Made Python, JavaScript, Java, and C# easy to learn for young builders.",
+    line: "Created interactive educational modules for Python/JavaScript for 100+ students.",
     img: "/logos/codeninjas.png", link: "https://www.codeninjas.com",
   },
 ];
 
 const projects: Item[] = [
-  { id: "pral", kind: "project", label: "PRAL", meta: "Best Overall, 1st",
+  { id: "pral", kind: "project", label: "PRAL", meta: "Best Overall, 1st @UWaterloo", event: "JAMHacks 10",
     sub: "Autonomous drones for cinematography.",
     img: "/pral.png", link: "https://devpost.com/software/pral" },
-  { id: "help", kind: "project", label: "helpidontknowhowtonetworkin", meta: "Best Gen AI Hack",
-    sub: "Facial-recognition networking assistant for events.",
-    img: "/helpidontknow.png", link: "https://dorahacks.io/buidl/26364/milestones" },
-  { id: "eve", kind: "project", label: "Eve", meta: "Best Social Hack",
+  { id: "eve", kind: "project", label: "Eve", meta: "Best Social Hack @Uoft", event: "Hack404",
     sub: "Campus safety network with AI deterrent and safe routing.",
     img: "/eve.png", link: "https://devpost.com/software/evo-cadujv" },
-  { id: "instalearn", kind: "project", label: "InstaLearn", meta: "Winner",
+  { id: "help", kind: "project", label: "helpidontknowhowtonetworkin", meta: "Best Gen AI Hack @UWaterloo", event: "JAMHacks 9",
+    sub: "Facial-recognition networking assistant for events.",
+    img: "/helpidontknow.png", link: "https://dorahacks.io/buidl/26364/milestones" },
+  { id: "instalearn", kind: "project", label: "InstaLearn", meta: "Winner (Virtual)", event: "RecessHacks",
     sub: "ML platform that replaces the social feed with learning.",
     img: "/instalearn.png", link: "https://devpost.com/software/instalearn-sxvyz1" },
 ];
@@ -160,7 +161,12 @@ export const Stage = () => {
             >
               {active ? (
                 <span className="inline-flex max-w-full items-center gap-2">
-                  <span className="ink font-medium">{active.sub}</span>
+                  <span className="ink font-medium">
+                    {active.sub}
+                    {active.event && (
+                      <span style={{ color: "var(--muted)", opacity: 0.7 }}> · {active.event}</span>
+                    )}
+                  </span>
                   <a
                     href={active.link}
                     target="_blank"
@@ -173,7 +179,7 @@ export const Stage = () => {
                   </a>
                 </span>
               ) : (
-                <span className="muted tracking-wide">Software Developer, Ontario</span>
+                <span className="muted tracking-wide">Software Engineer // Builder</span>
               )}
             </motion.p>
           </AnimatePresence>
@@ -196,7 +202,7 @@ export const Stage = () => {
         </motion.div>
 
         <motion.div {...rise(0.32)}>
-          <p className="eyebrow mb-3.5">Projects</p>
+          <p className="eyebrow mb-3.5">Stuff I've built</p>
           <div className="flex flex-col gap-2.5">
             {projects.map((it) => (
               <ProjectRow key={it.id} item={it} active={active} onHover={setPreview} onSelect={openOrSelect} />
@@ -768,7 +774,7 @@ function ExpRow({ item, active, onHover, onSelect }: { item: Item; active: Item 
   return (
     <button
       type="button"
-      className="group flex w-full items-center gap-3.5 text-left transition-[opacity] duration-300"
+      className="group flex w-full select-text items-center gap-3.5 text-left transition-[opacity] duration-300"
       style={{ opacity: dim ? 0.4 : 1 }}
       onMouseEnter={() => onHover(item)}
       onMouseLeave={() => onHover(null)}
@@ -795,7 +801,7 @@ function ExpRow({ item, active, onHover, onSelect }: { item: Item; active: Item 
             {item.meta}
           </span>
         </div>
-        <p className="mt-0.5 truncate text-[0.78rem] faint">{item.line}</p>
+        <p className="mt-0.5 max-w-[70ch] text-[0.78rem] faint">{item.line}</p>
       </div>
     </button>
   );
@@ -807,7 +813,7 @@ function ProjectRow({ item, active, onHover, onSelect }: { item: Item; active: I
   return (
     <button
       type="button"
-      className="group flex w-full min-w-0 items-baseline gap-2.5 text-left transition-[opacity] duration-300"
+      className="group flex w-full min-w-0 select-text items-baseline gap-2.5 text-left transition-[opacity] duration-300"
       style={{ opacity: dim ? 0.4 : 1 }}
       onMouseEnter={() => onHover(item)}
       onMouseLeave={() => onHover(null)}
