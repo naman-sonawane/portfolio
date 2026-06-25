@@ -49,17 +49,39 @@ const experience: Item[] = [
 
 const projects: Item[] = [
   { id: "pral", kind: "project", label: "PRAL", meta: "Best Overall, 1st @UWaterloo", event: "JAMHacks 10",
-    sub: "Autonomous drones for cinematography.",
+    sub: "Autonomous drones for cinematography",
     img: "/pral.png", link: "https://devpost.com/software/pral" },
   { id: "eve", kind: "project", label: "Eve", meta: "Best Social Hack @Uoft", event: "Hack404",
-    sub: "Campus safety network with AI deterrent and safe routing.",
+    sub: "Campus safety network with AI deterrent and safe routing",
     img: "/eve.png", link: "https://devpost.com/software/evo-cadujv" },
   { id: "help", kind: "project", label: "helpidontknowhowtonetworkin", meta: "Best Gen AI Hack @UWaterloo", event: "JAMHacks 9",
-    sub: "Facial-recognition networking assistant for events.",
+    sub: "Facial-recognition networking assistant for events",
     img: "/helpidontknow.png", link: "https://dorahacks.io/buidl/26364/milestones" },
   { id: "instalearn", kind: "project", label: "InstaLearn", meta: "Winner (Virtual)", event: "RecessHacks",
-    sub: "ML platform that replaces the social feed with learning.",
+    sub: "ML platform that replaces the social feed with learning",
     img: "/instalearn.png", link: "https://devpost.com/software/instalearn-sxvyz1" },
+];
+
+// Smaller roles shown in the "..." modal below experience.
+const more: { id: string; label: string; role: string; brand: string; img: string; link: string }[] = [
+  { id: "delta", label: "DeltaHacks", role: "Tech Exec", brand: "#00b8cb",
+    img: "https://www.deltahacks.com/favicon.ico",
+    link: "https://www.deltahacks.com" },
+  { id: "cutc", label: "CUTC", role: "Web Dev Exec", brand: "#8584e6",
+    img: "https://cutc.ca/_image?href=%2F_astro%2Flogo_200.CVZrVJI3.png&w=56&h=56&f=webpm",
+    link: "https://cutc.ca" },
+  { id: "genai", label: "GenAI Genesis", role: "Mentor", brand: "#a35be2",
+    img: "https://genaigenesis.ca/images/GenAI%20Logo%20Colored.svg?dpl=dpl_GfJD8tBSnhBBdPJ61XooniS12vBA",
+    link: "https://genaigenesis.ca" },
+  { id: "scripty", label: "Scripty", role: "Lead Full Stack Dev", brand: "#883eff",
+    img: "https://web.archive.org/web/20250222042935im_/https://scripty.me/SmallLogo.svg",
+    link: "https://scripty.me" },
+  { id: "eureka", label: "EurekaHacks", role: "Organizer", brand: "#fccb74",
+    img: "https://www.eurekahacks.ca/logo/small.webp",
+    link: "https://www.eurekahacks.ca" },
+  { id: "factful", label: "Factful", role: "Web Designer", brand: "#0086ff",
+    img: "https://factful.io/BlueFactfulLogo.png",
+    link: "https://factful.io" },
 ];
 
 const certs: Item[] = [
@@ -89,6 +111,7 @@ export const Stage = () => {
   // `preview` is set by hover, but only matters when nothing is pinned.
   const [pinned, setPinned] = useState<Item | null>(null);
   const [preview, setPreview] = useState<Item | null>(null);
+  const [moreOpen, setMoreOpen] = useState(false);
   const active = pinned ?? preview;
 
   // Refs the falling-ball physics reads. Every letter is its own span so the
@@ -125,12 +148,12 @@ export const Stage = () => {
   }, []);
 
   return (
-    <section className="grid min-h-[100svh] grid-cols-1 items-center gap-12 py-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 lg:py-0">
+    <section className="grid min-h-[100svh] grid-cols-1 items-center gap-12 py-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-14 lg:py-0">
       {/* ── LEFT : identity ── */}
       <div className="flex min-w-0 flex-col justify-center">
         <motion.h1
           ref={titleRef}
-          className="serif ink leading-[0.82] tracking-[-0.015em] text-[clamp(3.2rem,9vw,8rem)]"
+          className="serif ink leading-[0.82] tracking-[-0.015em] text-[clamp(2.8rem,7vw,6.2rem)]"
           {...rise(0)}
         >
           <span className="block">
@@ -150,7 +173,7 @@ export const Stage = () => {
           </span>
         </motion.h1>
 
-        <motion.div className="mt-6 min-h-6 text-[0.95rem]" {...rise(0.4)}>
+        <motion.div className="mt-6 flex min-h-[2.7rem] items-start text-[0.95rem] leading-snug" {...rise(0.4)}>
           <AnimatePresence mode="wait">
             <motion.p
               key={active ? active.id : "default"}
@@ -191,7 +214,7 @@ export const Stage = () => {
       </div>
 
       {/* ── RIGHT : experience / projects / certifications ── */}
-      <div className="flex min-w-0 flex-col justify-center gap-9 lg:gap-12">
+      <div className="flex min-w-0 flex-col justify-center gap-7 lg:gap-9">
         <motion.div {...rise(0.2)}>
           <p className="eyebrow mb-3.5">Experience</p>
           <div className="flex flex-col gap-3">
@@ -199,6 +222,14 @@ export const Stage = () => {
               <ExpRow key={it.id} item={it} active={active} onHover={setPreview} onSelect={selectItem} />
             ))}
           </div>
+          <button
+            type="button"
+            aria-label="View more experience"
+            className="more-dots mt-3"
+            onClick={(e) => { e.stopPropagation(); setMoreOpen(true); }}
+          >
+            …
+          </button>
         </motion.div>
 
         <motion.div {...rise(0.32)}>
@@ -210,7 +241,7 @@ export const Stage = () => {
           </div>
         </motion.div>
 
-        <motion.div {...rise(0.44)}>
+        <motion.div className="-mt-2 lg:-mt-3" {...rise(0.44)}>
           <p className="eyebrow mb-3.5">Certifications</p>
           <div className="flex flex-wrap items-center gap-1.5">
             {certs.map((it) => {
@@ -235,9 +266,95 @@ export const Stage = () => {
       </div>
 
       <FallingBall titleRef={titleRef} lettersRef={lettersRef} ready={overlayReady} />
+
+      <MoreModal open={moreOpen} onClose={() => setMoreOpen(false)} />
     </section>
   );
 };
+
+/* ── MoreModal : extra, smaller roles, opened by the "…" under Experience ── */
+function MoreModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [hovered, setHovered] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="modal-backdrop"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25, ease: EASE }}
+          onClick={(e) => { e.stopPropagation(); onClose(); }}
+        >
+          <motion.div
+            className="modal-panel"
+            initial={{ opacity: 0, y: 16, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 12, scale: 0.98 }}
+            transition={{ duration: 0.3, ease: EASE }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-5 flex items-baseline justify-between">
+              <p className="eyebrow"></p>
+              <button type="button" aria-label="Close" className="open-link" onClick={onClose}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M6 6 18 18" />
+                  <path d="M18 6 6 18" />
+                </svg>
+              </button>
+            </div>
+            <div className="flex flex-col gap-1.5" onMouseLeave={() => setHovered(null)}>
+              {more.map((m) => {
+                const isActive = hovered === m.id;
+                const dim = hovered && !isActive;
+                return (
+                  <a
+                    key={m.id}
+                    href={m.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="more-row transition-[opacity] duration-300"
+                    style={{ opacity: dim ? 0.4 : 1 }}
+                    onMouseEnter={() => setHovered(m.id)}
+                  >
+                    <span className="logo-chip">
+                      <img src={m.img} alt={m.label} loading="lazy" />
+                    </span>
+                    <span className="flex min-w-0 items-baseline gap-2">
+                      <span
+                        className="truncate text-[0.95rem] font-semibold underline"
+                        style={{
+                          color: isActive ? m.brand : "var(--ink)",
+                          textDecorationColor: m.brand,
+                          textDecorationThickness: "2px",
+                          textUnderlineOffset: "3px",
+                          transition: "color 0.3s var(--ease)",
+                        }}
+                      >
+                        {m.label}
+                      </span>
+                      <span className="shrink-0 text-[0.62rem] font-semibold uppercase tracking-[0.12em] faint">
+                        {m.role}
+                      </span>
+                    </span>
+                  </a>
+                );
+              })}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
 
 /* ── FallingBall : a red ball dropped above the "a" in Naman. Gravity pulls it
    down; it collides with the *exact shape* of every individual letter in
@@ -801,7 +918,7 @@ function ExpRow({ item, active, onHover, onSelect }: { item: Item; active: Item 
             {item.meta}
           </span>
         </div>
-        <p className="mt-0.5 max-w-[70ch] text-[0.78rem] faint">{item.line}</p>
+        <p className="mt-0.5 text-[0.78rem] faint">{item.line}</p>
       </div>
     </button>
   );
