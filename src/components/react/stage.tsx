@@ -562,10 +562,15 @@ function FallingBall({
       const REST_LETTER = 0.62; // bounciness off a glyph (higher = taller hops)
       const REST_FLOOR = 0.55; // bounciness off the bottom edge
       const FRICTION = 0.98; // tangential damping at each glyph contact
-      const ROLL_VX = 115; // rightward shove on first glyph contact
-      const MIN_VX = 90; // rightward floor while touching glyphs — escapes gaps
-      const MIN_BOUNCE = 235; // min upward hop off any glyph — keeps every
-      //                         letter (Naman *and* Sonawane) equally springy
+      const ROLL_VX = 115; // rightward roll-off speed once it reaches the floor
+      // Two scripted hops at the start: one off "Naman", one off "Sonawane",
+      // then it falls to the ground. [upward velocity, rightward velocity] each.
+      // Tall + moderate-right reads as a slow, arcing bounce that still carries
+      // across to the next word. Tune these to land the bounces where you want.
+      const HOPS = [
+        [560, 280], // off Naman — tall, drifts right across the gap to Sonawane
+        [380, 170], // off Sonawane — smaller, then it drops to the floor
+      ];
       const ALPHA = 18; // mask threshold (0–255) — low, to catch soft edges
       const GROW = 5; // px the hitbox is grown around each glyph
 
@@ -654,10 +659,11 @@ function FallingBall({
       const dropRect = rects[1] ?? rects[0];
       let x = dropRect.left + dropRect.width / 2 - 16; // a touch left of the "a"
       let y = -R;
-      let vx = 45; // a little rightward momentum from the very start
+      let vx = 18; // only a faint rightward drift on the way down
       let vy = 0;
       let rot = 0;
-      let pushed = false;
+      let hops = 0; // scripted hops performed so far
+      let hopCool = 0; // s left to coast over glyphs mid-arc (ignore contacts)
       drag.x = x;
       drag.y = y;
 
@@ -696,6 +702,7 @@ function FallingBall({
 
         for (let s = 0; s < SUB; s++) {
           vy += G * h;
+          if (hopCool > 0) hopCool -= h;
           x += vx * h;
           y += vy * h;
 
@@ -718,23 +725,29 @@ function FallingBall({
             const len = Math.hypot(nx, ny) || 1;
             nx /= len;
             ny /= len;
-            const vdot = vx * nx + vy * ny;
-            if (vdot < 0) {
-              const vnx = vdot * nx;
-              const vny = vdot * ny;
-              vx = (vx - vnx) * FRICTION - vnx * REST_LETTER;
-              vy = (vy - vny) * FRICTION - vny * REST_LETTER;
-            }
-            // Intro-only liveliness (off once the user has grabbed it):
-            // guarantee a hop off upward-facing glyphs and keep it rolling
-            // rightward out of the valleys between letters.
-            if (!drag.everGrabbed) {
-              if (ny < -0.35 && vy > -MIN_BOUNCE) vy = -MIN_BOUNCE;
-              if (!pushed) {
-                vx += ROLL_VX; // first glyph contact sends it travelling right
-                pushed = true;
+            // Mid-arc during a scripted hop: coast straight over any glyphs we
+            // clip so the bounce keeps its shape instead of being deflected.
+            const arcing = !drag.everGrabbed && hopCool > 0;
+            // A scripted hop fires on the first solid landing of the intro,
+            // then again when it touches down on the next word.
+            const scripted =
+              !drag.everGrabbed && hopCool <= 0 && ny < -0.35 && hops < HOPS.length;
+
+            if (!arcing) {
+              const vdot = vx * nx + vy * ny;
+              if (vdot < 0) {
+                const vnx = vdot * nx;
+                const vny = vdot * ny;
+                vx = (vx - vnx) * FRICTION - vnx * REST_LETTER;
+                vy = (vy - vny) * FRICTION - vny * REST_LETTER;
               }
-              if (vx < MIN_VX) vx = MIN_VX;
+            }
+            if (scripted) {
+              const [up, right] = HOPS[hops];
+              vy = -up; // tall, controlled hop
+              vx = right; // carries it toward the next word
+              hops++;
+              hopCool = 0.4; // coast over glyphs for the rest of the arc
             }
             // Pop the ball out of the glyph along the contact normal.
             let guard = 0;
