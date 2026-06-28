@@ -572,7 +572,8 @@ function FallingBall({
         [380, 170], // off Sonawane — smaller, then it drops to the floor
       ];
       const ALPHA = 18; // mask threshold (0–255) — low, to catch soft edges
-      const GROW = 5; // px the hitbox is grown around each glyph
+      const GROW = 2; // px the hitbox is grown around each glyph (kept small so
+      // the apple visually rests on the letters instead of floating above them)
 
       // ── Build a per-pixel mask of the glyph shapes ────────────────────
       // Each letter is drawn into an offscreen canvas with the same font and
@@ -664,6 +665,12 @@ function FallingBall({
       let rot = 0;
       let hops = 0; // scripted hops performed so far
       let hopCool = 0; // s left to coast over glyphs mid-arc (ignore contacts)
+      let calmFrames = 0; // consecutive slow, near-surface frames (settle counter)
+      let sinceContact = 99; // frames since the last glyph touch (rest tolerance)
+      let sleeping = false; // pinned at rest on the letters until grabbed again
+      const REST_SETTLE = 70; // below this impact speed, a glyph contact doesn't
+      // bounce — it just stops, so the apple doesn't jitter in a letter valley
+      const SLEEP_SPEED = 55; // speed below which a resting apple is put to sleep
       drag.x = x;
       drag.y = y;
 
@@ -677,10 +684,19 @@ function FallingBall({
 
         if (drag.active) {
           // Held: follow the pointer, no rolling.
+          sleeping = false; // grabbing wakes it
+          calmFrames = 0;
+          sinceContact = 99;
           x = drag.x;
           y = drag.y;
           vx = 0;
           vy = 0;
+          ball.style.transform = `translate(${x - R}px, ${y - R}px) rotate(${rot}rad)`;
+          raf = requestAnimationFrame(step);
+          return;
+        }
+        if (sleeping) {
+          // Settled on the letters — hold position exactly until grabbed again.
           ball.style.transform = `translate(${x - R}px, ${y - R}px) rotate(${rot}rad)`;
           raf = requestAnimationFrame(step);
           return;
@@ -699,6 +715,7 @@ function FallingBall({
         dx = live.left - capLeft;
         dy = live.top - capTop;
         const floorY = window.innerHeight - R;
+        let contacted = false; // did the apple touch a glyph this frame?
 
         for (let s = 0; s < SUB; s++) {
           vy += G * h;
@@ -712,7 +729,8 @@ function FallingBall({
           let nx = 0;
           let ny = 0;
           let hits = 0;
-          const N = 20;
+          const N = 32; // denser rim sampling so the slimmer hitbox (GROW) still
+          // catches thin glyph strokes between probe points
           for (let i = 0; i < N; i++) {
             const ang = (i / N) * Math.PI * 2;
             if (solidAt(x + Math.cos(ang) * R, y + Math.sin(ang) * R)) {
@@ -722,6 +740,7 @@ function FallingBall({
             }
           }
           if (hits) {
+            contacted = true;
             const len = Math.hypot(nx, ny) || 1;
             nx /= len;
             ny /= len;
@@ -738,8 +757,12 @@ function FallingBall({
               if (vdot < 0) {
                 const vnx = vdot * nx;
                 const vny = vdot * ny;
-                vx = (vx - vnx) * FRICTION - vnx * REST_LETTER;
-                vy = (vy - vny) * FRICTION - vny * REST_LETTER;
+                // Gentle contacts don't rebound — killing the normal velocity
+                // (rest = 0) lets the apple settle into a letter valley instead
+                // of buzzing as the contact normal flips between two glyphs.
+                const rest = -vdot < REST_SETTLE ? 0 : REST_LETTER;
+                vx = (vx - vnx) * FRICTION - vnx * rest;
+                vy = (vy - vny) * FRICTION - vny * rest;
               }
             }
             if (scripted) {
@@ -777,6 +800,24 @@ function FallingBall({
           }
 
           rot += (vx * h) / R; // spin tracks horizontal travel
+        }
+
+        // Once the user has dropped it onto the word, let it come to rest. The
+        // pop-out shoves the apple just clear of a glyph, so it isn't touching
+        // *every* frame — track frames since the last touch and treat a short
+        // gap as "still resting" so the flicker doesn't reset the counter.
+        // A run of slow, near-surface frames means it's settled: pin it (sleep)
+        // to kill the residual sub-pixel wobble in a letter valley.
+        sinceContact = contacted ? 0 : sinceContact + 1;
+        const nearSurface = sinceContact <= 4;
+        if (drag.everGrabbed && nearSurface && Math.hypot(vx, vy) < SLEEP_SPEED) {
+          if (++calmFrames > 8) {
+            vx = 0;
+            vy = 0;
+            sleeping = true;
+          }
+        } else {
+          calmFrames = 0;
         }
 
         drag.x = x;
