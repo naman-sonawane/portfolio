@@ -48,6 +48,9 @@ const experience: Item[] = [
 ];
 
 const projects: Item[] = [
+  { id: "minny", kind: "project", label: "Minny", meta: "CSE Challenge Winner @UWaterloo", event: "Hack the North",
+    sub: "Detective that turns raw access logs into a provable case file",
+    img: "/minny.jpg", link: "https://devpost.com/software/minny" },
   { id: "pral", kind: "project", label: "PRAL", meta: "Best Overall, 1st @UWaterloo", event: "JAMHacks 10",
     sub: "Autonomous drones for cinematography",
     img: "/pral.png", link: "https://devpost.com/software/pral" },
