@@ -2,12 +2,35 @@
 import "../styles/global.css";
 import Preloader from "../components/react/preloader";
 import { Stage } from "../components/react/stage";
+
+const title = "Naman Sonawane | Software Engineer in Toronto";
+const description =
+  "Naman Sonawane, software developer based in Toronto building AI-driven products. AI/NLP at Cohere, ML/AI research at MIT CSAIL.";
+// Always the https://www origin from `site`, whatever host served the request.
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL("/og-image.jpg", Astro.site).href;
+
+const person = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Naman Sonawane",
+  url: "https://www.namansonawane.com",
+  jobTitle: "Software Engineer",
+  address: { "@type": "PostalAddress", addressLocality: "Toronto", addressCountry: "CA" },
+  sameAs: [
+    "https://github.com/naman-sonawane",
+    "https://www.linkedin.com/in/naman-sonawane/",
+    "https://devpost.com/naman-sonawane",
+  ],
+};
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="/apple.png" />
+    <link rel="icon" href="/favicon-96.png" sizes="96x96" type="image/png" />
+    <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,11 +39,20 @@ import { Stage } from "../components/react/stage";
       rel="stylesheet"
     />
     <meta name="generator" content={Astro.generator} />
-    <title>Naman Sonawane</title>
-    <meta
-      name="description"
-      content="Naman Sonawane, software developer based in Toronto building AI-driven products. AI/NLP at Cohere, ML/AI research at MIT CSAIL."
-    />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(person)} />
   </head>
 
   <body class="main-body antialiased">
