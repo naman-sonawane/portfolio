@@ -8,7 +8,6 @@ const description =
   "Naman Sonawane, software engineer based in Toronto building AI-driven products. AI/NLP at Cohere, ML/AI research at MIT CSAIL.";
 // Always the https://www origin from `site`, whatever host served the request.
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
-const ogImage = new URL("/og-image.jpg", Astro.site).href;
 
 const person = {
   "@context": "https://schema.org",
@@ -47,10 +46,7 @@ const person = {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:card" content="summary" />
 
     <script type="application/ld+json" set:html={JSON.stringify(person)} />
   </head>
