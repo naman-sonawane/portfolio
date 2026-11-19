@@ -1,0 +1,216 @@
+---
+import "../../styles/global.css";
+
+const title = "Scripty | Naman Sonawane";
+const description =
+  "Scripty: AI agents that connect to external scripts (tools) to interact with the real world. Built a year before MCP.";
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL("/og-image.jpg", Astro.site).href;
+
+const subtitle = "AI Agents that connect to external scripts (tools) to interact with the real world";
+const quote = "In November 2024, Anthropic announced the Model Context Protocol. The tech press covered it like a new idea. I had been building the same idea for a year.";
+const paragraphs: { text?: string; pre?: string; link?: string; href?: string; post?: string }[] = [
+  {
+    "text": "In November 2024, Anthropic announced the Model Context Protocol, a standard for connecting AI agents to external tools so they could actually interact with the world. The tech press covered it like a new idea."
+  },
+  {
+    "text": "I had been building it for a whole year at 14 with a few of my high school friends."
+  },
+  {
+    "text": "Not a similar thing. Not inspired by the same problem. The same core abstraction: a central orchestrator, a library of external tools, and an agent that selects and executes the right tool at runtime based on the user's needs. We called the tools \"scripts.\" We called the product Scripty. We had enterprise clients, a community marketplace, millions of views on Instagram, and a broken post-signup funnel we didn't know was broken."
+  },
+  {
+    "text": "I'm not saying this to claim credit. I say it because independently arriving at the same abstraction as one of the leading AI labs before they shipped it is the most clarifying thing that's ever happened to me as a builder. It meant the idea was right."
+  },
+  {
+    "pre": "Scripty started the way a lot of things do after a falling out, with the same people, a new idea, and unfinished energy looking for somewhere to go. A few of us had left ",
+    "link": "Factful",
+    "href": "https://www.alexwudev.com/entry/factful",
+    "post": " together, and we weren't done building. The question was what to build next."
+  },
+  {
+    "text": "The frustration was simple: AI at the time was good at producing text and not much else. You could ask it to draft an email, and it would. You could ask it to write a script, and it would. But it couldn't send the email. It couldn't run the script. Every output was a suggestion that still required a human to do the actual thing. That gap between \"AI says what to do\" and \"AI does the thing\" felt like the most obvious problem in the space, and nobody had really closed it yet."
+  },
+  {
+    "text": "The idea was to close it. Build a system where an AI agent doesn't just reason about a task but also reaches out to execute it, connecting to external scripts that interact with the real world. Manage your files. Post to social media. Automate your outreach. The agent would figure out which tool to use, call it, and handle the result. We'd build the tools. Eventually, the community would too."
+  },
+  {
+    "text": "The core of Scripty was a sequential multi-agent pipeline, where each agent had a single, clearly scoped job and handed off to the next."
+  },
+  {
+    "text": "The first was the interface agent, the one the user actually talked to. It understood what you were asking for, broke it down into something actionable, and passed it forward. The second was the execution agent, which received that instruction, surveyed the available tool library, selected the right script, and ran it. The third was the safety agent, which sat between selection and execution and reviewed every call before anything actually happened. If it flagged something, the script was blocked entirely, no retry, no degraded execution, just a hard stop. That sequencing was intentional. Some scripts ran system-level commands, managing files, interacting with the OS, executing processes on the user's machine. The moment your AI can affect the real world, the failure modes stop being embarrassing and start being dangerous. The safety agent was how I tried to take that seriously."
+  },
+  {
+    "text": "The way the execution agent selected tools was straightforward but important to get right. Each script exposed a structured JSON manifest: a name, a description, and a typed parameter schema, and the full set of these manifests got passed as context to the execution agent on every call. The agent reasoned over that list to decide what to invoke. No embeddings, no retrieval layer, just the model reading a well-structured interface contract and making a decision. That meant the quality of each manifest mattered enormously. Vague descriptions produced wrong selections. Ambiguous parameter names produced malformed calls. Writing good manifests was its own discipline, and iterating on them was a significant part of how the system got more reliable over time."
+  },
+  {
+    "text": "The scripts themselves were more than wrappers. Looking at something like the resume optimizer, one of the more complex tools in the default library, you can see the full pattern: a public_description for the agent to reason over, an object manifest defining the typed interface, and an async function entry point that did the actual work. But what made the architecture interesting was that scripts could themselves make LLM calls via an internal call_ai() function. The resume optimizer, for instance, ran multiple AI calls in sequence, one to parse the raw resume into structured data using tool calling, then separate calls to optimize each section individually against the job description, accumulating context from previous sections as it went. So the top-level agent was orchestrating scripts, and some of those scripts were themselves running their own AI pipelines. The execution agent didn't need to know any of that. It just called the function and got back structured JSON."
+  },
+  {
+    "text": "Chaining was supported; the output of one script could inform the decision to call another, but it had guardrails. I prompted the execution agent explicitly to avoid unnecessary chaining, and I put a hard cap on depth to prevent loops. Both were necessary. Left unconstrained, agents chain more than they need to. Users don't want to watch a machine reason in circles; they want something to happen."
+  },
+  {
+    "text": "Scripts returned structured JSON with a second_response field that fed directly back into the conversation, so from the user's side the experience was a clean chat interface. They'd ask for something, and a nicely formatted result would appear. The pipeline behind it, the safety check, the manifest lookup, the LLM call, the script execution, sometimes multiple AI calls within the script itself, was invisible. That was intentional. The complexity was mine to manage, not theirs to understand."
+  },
+  {
+    "text": "The runtime layer went through its own evolution. My first approach was to install a Miniconda environment on the user's machine to run the Python scripts, which worked but was heavy; users had to set up an entire Python environment manually before they could do anything. I eventually replaced it with a Tauri sidecar: a bundled binary that could execute Python directly without requiring Miniconda at all. That meant touching Rust, which I wasn't familiar with, but it was the right tradeoff. The switch also came with a broader migration from Electron to Tauri, which I made after benchmarking both. Tauri was meaningfully faster and significantly lighter on memory. Electron's model of bundling a full Chromium instance made it easy to get started but expensive to run. For a desktop app that was already managing Python subprocesses and LLM calls, the overhead mattered."
+  },
+  {
+    "text": "The default library shipped with dozens of scripts covering the most common automation tasks. On top of that sat a community layer: users could download scripts others had built, publish their own, and sell them through a marketplace. Every script followed the same interface contract: public_description, typed JSON manifest, async entry point, structured JSON output. That standardization was what made the ecosystem composable. Any script built by anyone, if it followed the interface, would work with the orchestrator. The agent didn't need to know who wrote it or how it worked internally. It just needed the manifest."
+  },
+  {
+    "text": "What I was building, though I didn't have the vocabulary for it yet, was a protocol."
+  },
+  {
+    "text": "We didn't have a marketing budget. We had Reddit and Instagram and a product we genuinely believed in, and for a while that was enough."
+  },
+  {
+    "text": "The B2C push started on Reddit. I posted in r/csmajors and a few adjacent communities, and the response was immediate. Hundreds of people joined the waitlist. The thread got traction not because we were selling hard but because the idea resonated: students and developers who were already thinking about AI automation, who understood exactly what we were describing and wanted to try it. That early signal was real, and it felt like validation."
+  },
+  {
+    "text": "Instagram was bigger but stranger. We built up a following posting content around AI and automation, and one reel hit 5.7 million views. The audience was there. The problem was that we hadn't made it easy enough to go from watching the video to actually downloading the product. The link wasn't prominent. The path wasn't clear. Millions of people saw Scripty's name and did nothing with it, not because they weren't interested, but because we didn't make the next step obvious. That was a mistake I think about a lot."
+  },
+  {
+    "text": "The B2B side started at startup conferences. My cofounder and I went to a few, not with a polished enterprise pitch, just with a real product and something concrete to show. That was enough. We met the founder of EXEED Digitals, a LinkedIn-focused digital marketing agency, and agreed to build something together: an automation agent that could handle personalized LinkedIn outreach at scale."
+  },
+  {
+    "text": "The technical problem was harder than it sounds. LinkedIn is aggressive about detecting and blocking automated activity, and the consequences weren't just a failed request. They were getting client accounts flagged or banned. After researching the options, I landed on Camoufox, a stealth browser built on Firefox rather than Chromium. The key difference is that it operates at the engine level, spoofing browser fingerprints more deeply than tools like undetected-chromedriver, which layer detection evasion on top of Chromium after the fact."
+  },
+  {
+    "text": "Firefox also helped because it's less scrutinized than Chromium-based browsers by the platforms trying to detect bots. It wasn't a perfect solution; LinkedIn pushed updates that broke things unpredictably, but it was the most robust approach I found."
+  },
+  {
+    "text": "While testing the LinkedIn connector, I had the targeting filter set to investors. It worked well enough that one of them actually replied. That reply turned into a weekly meeting, and those meetings turned into something genuinely valuable: a consistent external perspective from someone who had seen a lot of companies at our stage and could tell us what we were missing."
+  },
+  {
+    "text": "What surprised us most was how the B2B side grew without us chasing it. Our brand name in the AI automation space had gotten out enough that founders and companies started reaching out to us directly. Another founder wanted personal automation tools to manage his community. Others came with workflow problems they'd already tried to solve and couldn't. We weren't cold calling anyone. They were finding us because Scripty had become, in a small but real way, the thing people thought of when they thought about AI agents that actually did things. That kind of inbound is hard to manufacture. We hadn't planned for it. It just happened because the product was real and the timing was right."
+  },
+  {
+    "text": "The analytics gap was the quietest failure and probably the most costly one."
+  },
+  {
+    "text": "We had hundreds of waitlist signups. We had viral content. We had inbound from businesses. By every surface metric, things were working. What we didn't know was that a significant portion of users who signed up and downloaded the app were hitting a wall somewhere in the onboarding flow and never getting past it. They weren't converting into active users. They were just disappearing, and because we hadn't set up proper analytics, we had no visibility into where or why. We saw the interest drop off and assumed it was natural. It wasn't. The funnel was broken, and we were blind to it."
+  },
+  {
+    "text": "By the time we understood what was happening, MCP had launched."
+  },
+  {
+    "text": "In November 2024, Anthropic announced the Model Context Protocol to significant coverage. I read the documentation and felt something I didn't quite have a word for at the time. It wasn't exactly pride, because we hadn't shipped what they shipped. It wasn't exactly defeat either. It was closer to clarity. Every core abstraction we had built around, a central orchestrator, a library of modular external tools, a typed interface contract between the agent and the tools, an ecosystem where anyone could contribute, was sitting right there in their spec. We had arrived at the same abstraction independently, at 14, a year before one of the leading AI labs made it a standard."
+  },
+  {
+    "text": "The timing was brutal in a practical sense. MCP had Anthropic's name behind it, a massive developer ecosystem adopting it immediately, and resources we couldn't compete with. But it also meant something important: the idea was right. We hadn't been building in the wrong direction. We had been building in exactly the right direction, just without the runway to see it through."
+  },
+  {
+    "text": "The honest version of what went wrong is that several things compounded at once. We didn't have analytics when we needed them most. We had a viral moment we weren't set up to capture. And then the tailwind we were riding became a wave that was too big for us. Any one of those might have been recoverable. Together, they weren't."
+  },
+  {
+    "text": "The technical things I carry are specific. Instrumentation is not optional. You cannot fix a funnel you cannot see, and by the time you notice users aren't activating, you've already lost most of them. I also think differently now about agentic systems and what it actually takes to make them safe. When your software can execute things in the real world, the design question isn't just \"does it work\" but \"what happens when it doesn't.\" The safety agent, the chaining caps, the hard stops were not features. They were the product being responsible about what it was."
+  },
+  {
+    "text": "The strategic thing I carry is simpler: inbound is a signal worth paying attention to. When businesses started finding us without us looking for them, that was the market telling us something. We were spread across B2C content, B2B services, and platform development all at once, and we didn't have the focus or the team size to do all three well. If I were doing it again, I'd have followed the inbound harder and earlier."
+  },
+  {
+    "text": "But the thing that stays with me most isn't a lesson. It's the fact that a few teenagers independently designed the same architecture as a well-resourced AI lab, shipped it as a real product with real users and real enterprise clients, and did it before anyone had a name for what it was. We didn't know enough about the industry to know how unlikely that was. So we just built it."
+  },
+  {
+    "text": "I've thought about whether knowing more would have helped. Better analytics, obviously. More focus, probably. But the core thing, the willingness to look at a problem that felt too big and just start, that came partly from not knowing what we were up against. MCP is now used everywhere. We built it first. I don't think that's nothing, and I'm glad we didn't wait until we were ready, because I'm not sure we ever would have been."
+  }
+];
+const meta = [
+  ["Year", "2022 to 2024"],
+  ["Role", "Co-founder, Lead Full-Stack Engineer"],
+  ["Website", "scripty.me"],
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon-96.png" sizes="96x96" type="image/png" />
+    <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+
+  <body class="main-body antialiased">
+    <div class="journal">
+      <nav class="journal-nav">
+        <a href="/" class="nav-link">&larr; Index</a>
+        <span class="eyebrow">Journal</span>
+      </nav>
+
+      <header class="journal-head">
+        <span class="eyebrow">Journal &middot; 01</span>
+        <h1 class="serif journal-title">Scripty</h1>
+        <p class="serif journal-sub">{subtitle}</p>
+
+        <dl class="journal-meta">
+          {meta.map(([k, v]) => (
+            <div>
+              <dt class="eyebrow">{k}</dt>
+              <dd>{k === "Website" ? <a href={`https://${v}`} target="_blank" rel="noopener">{v}</a> : v}</dd>
+            </div>
+          ))}
+        </dl>
+      </header>
+
+      <article class="journal-body">
+        <blockquote class="serif journal-quote">&ldquo;{quote}&rdquo;</blockquote>
+        {paragraphs.map((p) =>
+          p.text ? (
+            <p>{p.text}</p>
+          ) : (
+            <p>{p.pre}<a href={p.href} target="_blank" rel="noopener">({p.link})</a>{p.post}</p>
+          )
+        )}
+        <p class="journal-credit">
+          Written by my cofounder Alex Wu. Originally published at
+          <a href="https://www.alexwudev.com/entry/scripty" target="_blank" rel="noopener">alexwudev.com</a>.
+        </p>
+      </article>
+
+      <footer class="journal-foot">
+        <a href="/" class="nav-link">&larr; Back to index</a>
+      </footer>
+    </div>
+  </body>
+</html>
+
+<style>
+  .journal { max-width: 720px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  .journal-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 1.1rem; border-bottom: 1px solid var(--line);
+  }
+  .journal-head { padding: 4.5rem 0 3rem; border-bottom: 1px solid var(--line); }
+  .journal-title {
+    font-size: clamp(3.6rem, 11vw, 6.5rem); line-height: 0.95; letter-spacing: -0.02em;
+    margin: 1rem 0 1.1rem; color: var(--ink);
+  }
+  .journal-sub { font-style: italic; font-size: 1.35rem; line-height: 1.35; color: var(--muted); max-width: 34ch; }
+  .journal-meta { margin-top: 2.5rem; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
+  .journal-meta dd { margin: 0.45rem 0 0; font-size: 0.92rem; color: var(--ink); }
+  .journal-meta a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--faint); }
+  .journal-body { padding-top: 3rem; }
+  .journal-quote {
+    font-style: italic; font-size: clamp(1.5rem, 3.6vw, 2rem); line-height: 1.25; color: var(--ink);
+    border-left: 2px solid var(--ink); padding-left: 1.25rem; margin: 0 0 3rem;
+  }
+  .journal-body p { font-size: 1.04rem; line-height: 1.8; color: #2b2925; margin: 0 0 1.4rem; }
+  .journal-body p a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--faint); }
+  .journal-credit {
+    margin-top: 3rem !important; padding-top: 1.4rem; border-top: 1px solid var(--line);
+    font-size: 0.85rem !important; color: var(--muted) !important;
+  }
+  .journal-foot { margin-top: 3.5rem; }
+  @media (max-width: 560px) { .journal-meta { grid-template-columns: 1fr; } }
+</style>
